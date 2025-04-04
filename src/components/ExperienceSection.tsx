@@ -46,6 +46,24 @@ const ExperienceSection = () => {
             </p>
           </div>
         </div>
+        <div>
+          <div className="flex justify-between mb-1 print:mb-0">
+            <h4 className="font-bold text-lg text-gray-900 print:text-base">Gazstroyprom</h4>
+            <span className="text-sm text-gray-600 print:text-xs">07/05/2023 - 08/07/2023</span>
+          </div>
+          
+          <p className="italic text-gray-700 mb-1 print:text-sm print:mb-0">Team lead, .NET developer</p>
+          
+          <div className="space-y-2 text-gray-700 print:space-y-1">
+            <p className="print:text-xs">
+              Implemented tool for real-time objects identification with video surveillance cameras
+            </p>
+            
+            <p className="text-sm mt-1 print:text-[10px] print:mt-0">
+              Technologies used: .NET Core, CVAT, Jira
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

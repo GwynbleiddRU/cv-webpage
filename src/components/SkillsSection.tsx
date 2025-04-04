@@ -45,16 +45,16 @@ const SkillsSection = () => {
               {renderSkillBar(5)}
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-gray-700 print:text-xs">Python</span>
-              {renderSkillBar(4)}
-            </div>
-            <div className="flex justify-between items-center">
               <span className="text-gray-700 print:text-xs">REST API</span>
               {renderSkillBar(5)}
             </div>
             <div className="flex justify-between items-center">
               <span className="text-gray-700 print:text-xs">Requests & BS</span>
               {renderSkillBar(4)}
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-gray-700 print:text-xs">Python</span>
+              {renderSkillBar(3)}
             </div>
           </div>
         </div>
@@ -63,16 +63,16 @@ const SkillsSection = () => {
           <h4 className="font-medium text-gray-900 mb-2 print:text-sm print:mb-1">Frontend Development</h4>
           <div className="space-y-2 print:space-y-1">
             <div className="flex justify-between items-center">
-              <span className="text-gray-700 print:text-xs">Angular</span>
+              <span className="text-gray-700 print:text-xs">HTML+CSS</span>
               {renderSkillBar(4)}
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-gray-700 print:text-xs">Angular</span>
+              {renderSkillBar(3)}
             </div>
             <div className="flex justify-between items-center">
               <span className="text-gray-700 print:text-xs">React</span>
               {renderSkillBar(3)}
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-700 print:text-xs">HTML+CSS</span>
-              {renderSkillBar(4)}
             </div>
             <div className="flex justify-between items-center">
               <span className="text-gray-700 print:text-xs">Flutter</span>
@@ -90,7 +90,7 @@ const SkillsSection = () => {
             </div>
             <div className="flex justify-between items-center">
               <span className="text-gray-700 print:text-xs">MSSQL</span>
-              {renderSkillBar(4)}
+              {renderSkillBar(3)}
             </div>
             <div className="flex justify-between items-center">
               <span className="text-gray-700 print:text-xs">Docker</span>
