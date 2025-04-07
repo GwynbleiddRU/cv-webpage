@@ -74,7 +74,7 @@
       "additionalInfo": "Владею английским (C1) и немного испанским (A2), русский - родной"
     },
     "projects": {
-      "sectionTitle": "Значимые проекты",
+      "sectionTitle": "Интересные проекты",
       "tuneLike": {
         "title": "TuneLike - API социальной музыкальной платформы",
         "subtitle": "Безопасный API для социальной платформы",
@@ -83,7 +83,7 @@
       },
       "moduCart": {
         "title": "ModuCart - Модульный E-Commerce API",
-        "subtitle": "Масштабируемая платформа электронной коммерции с микросервисами",
+        "subtitle": "Масштабируемая e-commerce платформа с микросервисами",
         "description": "Модульная и безопасная система электронной коммерции, использующая ASP.NET Core, Ocelot API Gateway, JWT-аутентификацию и Consul для обнаружения сервисов и балансировки нагрузки.",
         "technologies": "Стек: C#, .NET 9, ASP.NET Core, MongoDB, Docker, Kubernetes"
       },
