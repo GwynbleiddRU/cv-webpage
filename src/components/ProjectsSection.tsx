@@ -1,10 +1,15 @@
+import { useTranslation } from "react-i18next";
 import { Github } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const ProjectsSection = () => {
+  const { t } = useTranslation();
+  
   return (
     <div className="print:break-inside-avoid">
-      <h3 className="text-xl font-semibold text-gray-800 mb-3 print:text-base">Notable Projects</h3>
+      <h3 className="text-xl font-semibold text-gray-800 mb-3 print:text-base">
+        {t("projects.sectionTitle")}
+      </h3>
       
       <div 
         className="grid grid-cols-1 sm:grid-cols-2 gap-3 print:gap-2"
@@ -18,14 +23,17 @@ const ProjectsSection = () => {
           "border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
           "print:break-inside-avoid"
         )}>
-          <h4 className="font-medium text-gray-900 print:text-sm">TuneLike - Social Music Platform API</h4>
-          <p className="text-sm text-gray-600 mb-1 print:text-xs print:mb-0">Secure API for a social platform</p>
+          <h4 className="font-medium text-gray-900 print:text-sm">
+            {t("projects.tuneLike.title")}
+          </h4>
+          <p className="text-sm text-gray-600 mb-1 print:text-xs print:mb-0">
+            {t("projects.tuneLike.subtitle")}
+          </p>
           <p className="text-gray-700 text-sm print:text-xs">
-            A feature-rich API supporting authentication, real-time chat, intelligent dating, 
-            event discovery, and analytics-driven recommendations.
+            {t("projects.tuneLike.description")}
           </p>
           <p className="text-xs text-gray-500 mt-1 print:text-[10px]">
-            Technologies: C#, ASP.NET Core, SignalR, MongoDB, Nginx, JWT Authentication
+            {t("projects.tuneLike.technologies")}
           </p>
         </a>
 
@@ -33,14 +41,17 @@ const ProjectsSection = () => {
           "border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
           "print:break-inside-avoid"
         )}>
-          <h4 className="font-medium text-gray-900 print:text-sm">ModuCart - Modular E-Commerce API</h4>
-          <p className="text-sm text-gray-600 mb-1 print:text-xs print:mb-0">Scalable e-commerce platform with microservices</p>
+          <h4 className="font-medium text-gray-900 print:text-sm">
+            {t("projects.moduCart.title")}
+          </h4>
+          <p className="text-sm text-gray-600 mb-1 print:text-xs print:mb-0">
+            {t("projects.moduCart.subtitle")}
+          </p>
           <p className="text-gray-700 text-sm print:text-xs">
-            A modular and secure e-commerce system leveraging ASP.NET Core, Ocelot API Gateway, 
-            JWT authentication, and Consul for service discovery and load balancing.
+            {t("projects.moduCart.description")}
           </p>
           <p className="text-xs text-gray-500 mt-1 print:text-[10px]">
-            Technologies: C#, .NET 9, ASP.NET Core, MongoDB, Docker, Kubernetes
+            {t("projects.moduCart.technologies")}
           </p>
         </a>
         
@@ -48,14 +59,17 @@ const ProjectsSection = () => {
           "border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
           "print:break-inside-avoid"
         )}>
-          <h4 className="font-medium text-gray-900 print:text-sm">Playlist Recommendation Engine</h4>
-          <p className="text-sm text-gray-600 mb-1 print:text-xs print:mb-0">Based on user biometric indicators</p>
+          <h4 className="font-medium text-gray-900 print:text-sm">
+            {t("projects.playlistEngine.title")}
+          </h4>
+          <p className="text-sm text-gray-600 mb-1 print:text-xs print:mb-0">
+            {t("projects.playlistEngine.subtitle")}
+          </p>
           <p className="text-gray-700 text-sm print:text-xs">
-            Application that analyzes user biometric data to recommend personalized playlists, 
-            enhancing user experience through intelligent content matching.
+            {t("projects.playlistEngine.description")}
           </p>
           <p className="text-xs text-gray-500 mt-1 print:text-[10px]">
-            Technologies: Xamarin, ASP.NET Core, Java, Python
+            {t("projects.playlistEngine.technologies")}
           </p>
         </div>
         
@@ -63,14 +77,17 @@ const ProjectsSection = () => {
           "border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
           "print:break-inside-avoid"
         )}>
-          <h4 className="font-medium text-gray-900 print:text-sm">Diagram Editor & Constructor</h4>
-          <p className="text-sm text-gray-600 mb-1 print:text-xs print:mb-0">Visual design tool</p>
+          <h4 className="font-medium text-gray-900 print:text-sm">
+            {t("projects.diagramEditor.title")}
+          </h4>
+          <p className="text-sm text-gray-600 mb-1 print:text-xs print:mb-0">
+            {t("projects.diagramEditor.subtitle")}
+          </p>
           <p className="text-gray-700 text-sm print:text-xs">
-            Developed a sophisticated editor for creating and manipulating diagrams and flowcharts
-            with an intuitive user interface and extensive functionality.
+            {t("projects.diagramEditor.description")}
           </p>
           <p className="text-xs text-gray-500 mt-1 print:text-[10px]">
-            Technologies: .NET, C#, WPF
+            {t("projects.diagramEditor.technologies")}
           </p>
         </a>
         
@@ -78,14 +95,17 @@ const ProjectsSection = () => {
           "border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
           "print:break-inside-avoid"
         )}>
-          <h4 className="font-medium text-gray-900 print:text-sm">2D/3D Graphics Editor</h4>
-          <p className="text-sm text-gray-600 mb-1 print:text-xs print:mb-0">With matrix transformation capabilities</p>
+          <h4 className="font-medium text-gray-900 print:text-sm">
+            {t("projects.graphicsEditor.title")}
+          </h4>
+          <p className="text-sm text-gray-600 mb-1 print:text-xs print:mb-0">
+            {t("projects.graphicsEditor.subtitle")}
+          </p>
           <p className="text-gray-700 text-sm print:text-xs">
-            Created a specialized editor for 2D and 3D graphics manipulation, implementing
-            complex matrix transformations and rendering algorithms.
+            {t("projects.graphicsEditor.description")}
           </p>
           <p className="text-xs text-gray-500 mt-1 print:text-[10px]">
-            Technologies: OpenGL, WinForms
+            {t("projects.graphicsEditor.technologies")}
           </p>
         </a>
         
@@ -93,21 +113,24 @@ const ProjectsSection = () => {
           "border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
           "print:break-inside-avoid"
         )}>
-          <h4 className="font-medium text-gray-900 print:text-sm">Manufacturing Database System</h4>
-          <p className="text-sm text-gray-600 mb-1 print:text-xs print:mb-0">With automated calculations and reporting</p>
+          <h4 className="font-medium text-gray-900 print:text-sm">
+            {t("projects.manufacturingSystem.title")}
+          </h4>
+          <p className="text-sm text-gray-600 mb-1 print:text-xs print:mb-0">
+            {t("projects.manufacturingSystem.subtitle")}
+          </p>
           <p className="text-gray-700 text-sm print:text-xs">
-            Built a comprehensive database system for manufacturing environments featuring
-            automated calculations, custom report generation, and optimized database queries.
+            {t("projects.manufacturingSystem.description")}
           </p>
           <p className="text-xs text-gray-500 mt-1 print:text-[10px]">
-            Technologies: MSSQL, EF/ADO.NET, MS Office integration
+            {t("projects.manufacturingSystem.technologies")}
           </p>
         </a>
       </div>
       
       <div className="mt-4 print:mt-2 text-center">
         <p className="text-gray-700 text-sm print:text-xs">
-          More detailed project information and code samples at GitHub:
+          {t("projects.githubInfo")}
         </p>
         <a 
           href="https://github.com/GwynbleiddRU" 

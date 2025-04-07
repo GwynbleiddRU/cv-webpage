@@ -1,7 +1,9 @@
-
+import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 
 const SkillsSection = () => {
+  const { t } = useTranslation();
+  
   const renderSkillBar = (level: number) => {
     const bars = [];
     for (let i = 0; i < 5; i++) {
@@ -27,7 +29,9 @@ const SkillsSection = () => {
 
   return (
     <div className="print:break-inside-avoid">
-      <h3 className="text-xl font-semibold text-gray-800 mb-3 print:text-base print:mb-2">Technical Skills</h3>
+      <h3 className="text-xl font-semibold text-gray-800 mb-3 print:text-base print:mb-2">
+        {t("skills.sectionTitle")}
+      </h3>
       
       <div 
         className="grid grid-cols-1 sm:grid-cols-2 gap-4 print:gap-2"
@@ -38,7 +42,9 @@ const SkillsSection = () => {
         }}
       >
         <div>
-          <h4 className="font-medium text-gray-900 mb-2 print:text-sm print:mb-1">Backend Development</h4>
+          <h4 className="font-medium text-gray-900 mb-2 print:text-sm print:mb-1">
+            {t("skills.categories.backend")}
+          </h4>
           <div className="space-y-2 print:space-y-1">
             <div className="flex justify-between items-center">
               <span className="text-gray-700 print:text-xs">.NET C#</span>
@@ -60,7 +66,9 @@ const SkillsSection = () => {
         </div>
         
         <div>
-          <h4 className="font-medium text-gray-900 mb-2 print:text-sm print:mb-1">Frontend Development</h4>
+          <h4 className="font-medium text-gray-900 mb-2 print:text-sm print:mb-1">
+            {t("skills.categories.frontend")}
+          </h4>
           <div className="space-y-2 print:space-y-1">
             <div className="flex justify-between items-center">
               <span className="text-gray-700 print:text-xs">HTML+CSS</span>
@@ -82,7 +90,9 @@ const SkillsSection = () => {
         </div>
         
         <div>
-          <h4 className="font-medium text-gray-900 mb-2 print:text-sm print:mb-1">Database & DevOps</h4>
+          <h4 className="font-medium text-gray-900 mb-2 print:text-sm print:mb-1">
+            {t("skills.categories.database")}
+          </h4>
           <div className="space-y-2 print:space-y-1">
             <div className="flex justify-between items-center">
               <span className="text-gray-700 print:text-xs">MongoDB</span>
@@ -104,12 +114,13 @@ const SkillsSection = () => {
         </div>
         
         <div>
-          <h4 className="font-medium text-gray-900 mb-2 print:text-sm print:mb-1">Specialized Skills</h4>
+          <h4 className="font-medium text-gray-900 mb-2 print:text-sm print:mb-1">
+            {t("skills.categories.specialized")}
+          </h4>
           <div className="space-y-1 text-gray-700 print:space-y-0.5">
-            <p className="print:text-xs">• Building projects from scratch</p>
-            <p className="print:text-xs">• High-load system architecture and optimization</p>
-            <p className="print:text-xs">• Database design and query optimization</p>
-            <p className="print:text-xs">• Prompt engineering and AI tools expertise</p>
+            {(t("skills.specializedSkills", { returnObjects: true }) as string[]).map((skill, index) => (
+              <p key={index} className="print:text-xs">• {skill}</p>
+            ))}
           </div>
         </div>
       </div>

@@ -1,0 +1,132 @@
+{
+    "index": {
+      "documentTitle": "Georgiy_Nosachev_CV",
+      "welcomeTitle": "Welcome to my CV",
+      "welcomeSubtitle": "updated 07.04.25",
+      "downloadButton": "Download PDF"
+    },
+    "header": {
+      "name": "Georgiy Nosachev",
+      "prefix": "Fullstack Developer",
+      "portfolio": "portfolio website"
+    },
+    "education": {
+      "sectionTitle": "Education",
+      "mastersDegree": {
+        "title": "Master's Degree, Technological Entrepreneurship",
+        "institution": "Innopolis University",
+        "description": "Gained expertise in implementing high-load projects and acquired business management experience in the IT sector"
+      },
+      "bachelorsDegree": {
+        "title": "Bachelor's Degree, Software Engineering",
+        "institution": "Higher School of Economics, Perm",
+        "description": "Acquired core knowledge in OOP, client-server architecture, and database management. Implemented various projects including machine learning and computer graphics applications"
+      },
+      "professionalDevelopment": {
+        "title": "Professional Development, AI Architecture",
+        "institution": "Innopolis University",
+        "description": "Enhanced skills in statistical analysis and implementation of machine learning models in real-world projects"
+      }
+    },
+    "experience": {
+      "sectionTitle": "Professional Experience",
+      "tuneLike": {
+        "company": "TuneLike",
+        "position": "CTO, Fullstack Developer & Project Manager",
+        "description": "Designed and developed an innovative platform for finding events and connecting people based on musical preferences, enabling social interactions among event participants.",
+        "keyAchievements": "Key Achievements:",
+        "achievements": [
+          "Implemented a sophisticated algorithm that creates psychological profiles by analyzing acoustic properties and lyrics of user-selected tracks",
+          "Independently handled all aspects of development including project management, backend and frontend implementation",
+          "Managed the complete product lifecycle from concept to launch, including mentorship of junior developers",
+          "Developed a scalable architecture capable of handling increasing user loads"
+        ],
+        "technologiesUsed": "Technologies used: .NET Core, C#, Python, Angular, MongoDB, Docker, RESTful APIs, Machine Learning algorithms for audio analysis"
+      },
+      "gazstroyprom": {
+        "company": "Gazstroyprom",
+        "position": "Team lead, .NET developer",
+        "description": "Implemented tool for real-time objects identification with video surveillance cameras",
+        "technologiesUsed": "Technologies used: .NET Core, CVAT, Jira"
+      }
+    },
+    "profile": {
+      "sectionTitle": "Professional Profile",
+      "description": "Experienced Fullstack Developer with strong software engineering knowledge and extensive practical experience in developing robust, full-featured applications. Focused on creating efficient, high-performance systems with expertise in API development and high-load system architecture.",
+      "technicalExpertise": {
+        "title": "Technical Expertise",
+        "points": [
+          "Designing and developing RESTful API architectures",
+          "Building high-load system backends with efficient optimization",
+          "Full-cycle application development from concept to deployment",
+          "Database design and optimization for performance"
+        ]
+      },
+      "professionalSkills": {
+        "title": "Professional Skills",
+        "points": [
+          "Independent project management and technical leadership",
+          "Implementing complex algorithms and data structures",
+          "System architecture design and optimization",
+          "Cross-platform application development",
+          "Technical mentorship and team guidance"
+        ]
+      },
+      "additionalInfo": "Currently enhancing expertise in MCP to further optimize development processes with AI integration. Proficient in English (C1) and bit Spanish (A2), Russian - Native."
+    },
+    "projects": {
+      "sectionTitle": "Notable Projects",
+      "tuneLike": {
+        "title": "TuneLike - Social Music Platform API",
+        "subtitle": "Secure API for a social platform",
+        "description": "A feature-rich API supporting authentication, real-time chat, intelligent dating, event discovery, and analytics-driven recommendations.",
+        "technologies": "Technologies: C#, ASP.NET Core, SignalR, MongoDB, Nginx, JWT Authentication"
+      },
+      "moduCart": {
+        "title": "ModuCart - Modular E-Commerce API",
+        "subtitle": "Scalable e-commerce platform with microservices",
+        "description": "A modular and secure e-commerce system leveraging ASP.NET Core, Ocelot API Gateway, JWT authentication, and Consul for service discovery and load balancing.",
+        "technologies": "Technologies: C#, .NET 9, ASP.NET Core, MongoDB, Docker, Kubernetes"
+      },
+      "playlistEngine": {
+        "title": "Playlist Recommendation Engine",
+        "subtitle": "Based on user biometric indicators",
+        "description": "Application that analyzes user biometric data to recommend personalized playlists, enhancing user experience through intelligent content matching.",
+        "technologies": "Technologies: Xamarin, ASP.NET Core, Java, Python"
+      },
+      "diagramEditor": {
+        "title": "Diagram Editor & Constructor",
+        "subtitle": "Visual design tool",
+        "description": "Developed a sophisticated editor for creating and manipulating diagrams and flowcharts with an intuitive user interface and extensive functionality.",
+        "technologies": "Technologies: .NET, C#, WPF"
+      },
+      "graphicsEditor": {
+        "title": "2D/3D Graphics Editor",
+        "subtitle": "With matrix transformation capabilities",
+        "description": "Created a specialized editor for 2D and 3D graphics manipulation, implementing complex matrix transformations and rendering algorithms.",
+        "technologies": "Technologies: OpenGL, WinForms"
+      },
+      "manufacturingSystem": {
+        "title": "Manufacturing Database System",
+        "subtitle": "With automated calculations and reporting",
+        "description": "Built a comprehensive database system for manufacturing environments featuring automated calculations, custom report generation, and optimized database queries.",
+        "technologies": "Technologies: MSSQL, EF/ADO.NET, MS Office integration"
+      },
+      "githubInfo": "More detailed project information and code samples at GitHub:"
+    },
+    "skills": {
+      "sectionTitle": "Technical Skills",
+      "categories": {
+        "backend": "Backend Development",
+        "frontend": "Frontend Development",
+        "database": "Database & DevOps",
+        "specialized": "Specialized Skills"
+      },
+      "specializedSkills": [
+        "Building projects from scratch",
+        "High-load system architecture and optimization",
+        "Database design and query optimization",
+        "Prompt engineering and AI tools expertise"
+      ]
+    }
+  }
