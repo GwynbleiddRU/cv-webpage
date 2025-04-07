@@ -6,7 +6,7 @@ const CvHeader = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-4 print:gap-2">
+    <div className="cv-header flex flex-col md:flex-row justify-between items-center md:items-start gap-4 print:gap-2">
       <div>
         <h1 className="text-3xl font-bold text-gray-900 print:text-xl">{t("header.name")}</h1>
         <h2 className="text-xl font-semibold text-blue-700 mt-1 print:text-base print:mt-0">{t("header.prefix")}</h2>

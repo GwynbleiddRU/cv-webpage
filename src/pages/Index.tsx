@@ -9,9 +9,10 @@ import ExperienceSection from "@/components/ExperienceSection";
 import EducationSection from "@/components/EducationSection";
 import SkillsSection from "@/components/SkillsSection";
 import ProjectsSection from "@/components/ProjectsSection";
-import { useReactToPrint } from "@/hooks/useReactToPrint";
+// import { useReactToPrint } from "@/hooks/useReactToPrint";
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { useReactToPrint } from "@/lib/print";
 
 const Index = () => {
   const { t, i18n } = useTranslation();
