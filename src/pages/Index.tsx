@@ -38,7 +38,17 @@ const Index = () => {
         </div>
         <div className="flex flex-col sm:flex-row sm:items-center gap-2">
           <Button onClick={toggleLanguage} variant="outline" className="w-full sm:w-auto">
-            {i18n.language === "en" ? "🇷🇺 Русский" : "🇬🇧 English"}
+            {i18n.language === "en" ? (
+              <>
+                <span className="fi fi-ru mr-2" aria-hidden="true" />
+                Русский
+              </>
+            ) : (
+              <>
+                <span className="fi fi-gb mr-2" aria-hidden="true" />
+                English
+              </>
+            )}
           </Button>
           <Button onClick={handlePrint} className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700">
             <ArrowDownToLine className="mr-2 h-4 w-4" />
