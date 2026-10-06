@@ -7,7 +7,7 @@ const ProjectsSection = () => {
   
   return (
     <div className="print:break-inside-avoid">
-      <h3 className="text-xl font-semibold text-gray-800 mb-3 print:text-base">
+      <h3 className="text-xl font-bold text-gray-800 mb-3 print:text-base">
         {t("projects.sectionTitle")}
       </h3>
       

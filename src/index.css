@@ -99,3 +99,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+.cv-lang-row {
+  container-type: inline-size;
+}
+
+.cv-langs {
+  margin-top: 0.5rem;
+  color: #6b7280;
+  line-height: 1.35;
+  white-space: nowrap;
+  font-size: 13px;
+  font-size: clamp(8px, calc(100cqi / 27), 13px);
+}

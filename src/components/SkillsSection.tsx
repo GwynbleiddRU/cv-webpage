@@ -29,7 +29,7 @@ const SkillsSection = () => {
 
   return (
     <div className="print:break-inside-avoid">
-      <h3 className="text-xl font-semibold text-gray-800 mb-3 print:text-base print:mb-2">
+      <h3 className="text-xl font-bold text-gray-800 mb-3 print:text-base print:mb-2">
         {t("skills.sectionTitle")}
       </h3>
       

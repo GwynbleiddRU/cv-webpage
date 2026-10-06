@@ -3,12 +3,16 @@
       "documentTitle": "Georgiy_Nosachev_CV",
       "welcomeTitle": "Welcome to my CV",
       "welcomeSubtitle": "updated 07.04.25",
-      "downloadButton": "Download PDF"
+      "downloadButton": "Download PDF",
+      "navLabel": "Which CV is open",
+      "developerLink": "Developer",
+      "aiLink": "AI implementation"
     },
     "header": {
       "name": "Georgiy Nosachev",
       "prefix": "Fullstack Developer",
-      "portfolio": "portfolio website"
+      "portfolio": "portfolio website",
+      "languages": "Russian — native, English — C1, Spanish — A2."
     },
     "education": {
       "sectionTitle": "Education",
@@ -72,7 +76,7 @@
           "Technical mentorship and team guidance"
         ]
       },
-      "additionalInfo": "Currently enhancing expertise in MCP to further optimize development processes with AI integration. Proficient in English (C1) and bit Spanish (A2), Russian - Native."
+      "additionalInfo": "Currently enhancing expertise in MCP to further optimize development processes with AI integration."
     },
     "projects": {
       "sectionTitle": "Notable Projects",
@@ -128,5 +132,96 @@
         "Database design and query optimization",
         "Prompt engineering and AI tools expertise"
       ]
+    },
+    "ai": {
+      "documentTitle": "Georgiy_Nosachev_AI_CV",
+      "role": "AI Implementation and Automation Specialist",
+      "tagline": "I adapt AI to real tasks for people and businesses",
+      "introTitle": "Profile",
+      "intro": [
+        "I help turn what artificial intelligence can do into clear working processes: from handling documents and preparing materials to automating routine tasks with AI agents.",
+        "I have used AI in practice since late 2022, when ChatGPT became publicly available. Since then I have applied different models and tools while building my own products, working with information, and automating everyday tasks.",
+        "My work is not limited to getting an answer from a model. I organize the whole process: understand the task, choose the tools, prepare the instructions, connect the stages, and check the quality of the result."
+      ],
+      "skillsTitle": "What I do",
+      "skills": [
+        {
+          "title": "Match AI to a specific task",
+          "main": "I clarify the result, who will use it, and which mistakes are unacceptable.",
+          "extra": [
+            "I choose models and tools for the kind of work and compare them on the real task: answer quality, cost, speed, limits, and confidentiality.",
+            "I decide where one request is enough, where a chain of steps is needed, and where a person must take part."
+          ]
+        },
+        {
+          "title": "Write effective requests and instructions",
+          "main": "I turn a vague wish into a concrete task for the AI.",
+          "extra": [
+            "I set the context, source material, limits, answer format, and the criteria for done.",
+            "I split hard work into stages so the model is not asked to do everything at once.",
+            "Repeating work gets a template, and if a mistake keeps appearing, I fix the instruction."
+          ]
+        },
+        {
+          "title": "Organize the work of AI agents",
+          "main": "I design a process in which assistants take different roles: gather information, analyze it, produce a result, and check it.",
+          "extra": [
+            "I set the order of steps, what passes between them, and a person’s approval for an important action.",
+            "I plan for missing data, errors, and contradictory results.",
+            "A one-off trial becomes a process that can be repeated."
+          ]
+        },
+        {
+          "title": "Check the quality of results",
+          "main": "I check that the result matches the original task, not only that the text sounds convincing.",
+          "extra": [
+            "Confirmed information stays separate from assumptions, and important points are checked against the sources.",
+            "A separate review decides what can be used at once and what needs a manual check."
+          ]
+        },
+        {
+          "title": "Make AI understandable to the people who use it",
+          "main": "I explain what AI can and cannot do without heavy technical language.",
+          "extra": [
+            "I prepare instructions, templates, and examples for everyday work.",
+            "I fit the tool into work people already do, rather than adding an extra burden."
+          ]
+        }
+      ],
+      "practiceTitle": "Practical experience",
+      "practice": [
+        "AI work since late 2022. I use different models and AI tools for development, information analysis, and automating routine tasks. I have practice in refining requests step by step, comparing model results, writing detailed instructions, and organizing multi-step work with agents.",
+        "I build my own products, combining programming, interface design, content preparation, and AI-assisted working processes. A technical background lets me do more than propose a scenario: I can connect it to a working application or an existing system."
+      ],
+      "areasTitle": "Where I apply this",
+      "areas": [
+        { "title": "Documents", "text": "PDF processing, text recognition, structuring information, and anonymizing data." },
+        { "title": "Education", "text": "work on platforms for teachers and schools, and preparing and organizing learning materials." },
+        { "title": "Development", "text": "briefing agents, building and revising functionality, testing, review, and documentation." },
+        { "title": "Content", "text": "preparing and editing materials, localization, SEO tasks, and marketing text." },
+        { "title": "Planning", "text": "turning scattered requirements into structured plans, specifications, and sequences of actions." }
+      ],
+      "methodTitle": "How I work",
+      "steps": [
+        "I take the task apart: what is done by hand now, what result is needed, and what the limits are.",
+        "I choose the approach: one tool, several models, or a chain of agents.",
+        "I prepare the instructions: context, rules, examples, the shape of the result, and the quality criteria.",
+        "I assemble a trial process and test it on typical and difficult cases.",
+        "I set the controls: data checks, error handling, and approval for important actions.",
+        "I revise the process from what the trials showed.",
+        "I hand over clear instructions for use and for later upkeep."
+      ],
+      "example": "For example, incoming documents can be handled like this: one agent extracts the information, a second puts it into the required format, a third checks completeness and contradictions, and a person confirms the result before it is used further.",
+      "valueTitle": "How this helps a company",
+      "valueLead": "I can take the path from “we want to use AI” to a working process:",
+      "value": [
+        "Find the tasks where AI is actually useful.",
+        "Choose a suitable set of tools.",
+        "Set up the requests, instructions, and how the agents work together.",
+        "Connect AI to existing services and data.",
+        "Organize quality checks and human control.",
+        "Prepare the process for regular use."
+      ],
+      "close": "My strength is the combination of several years of practical AI work, technical skill, and attention to the final result. I can use the models, and I can build a clear system of work around them."
     }
   }

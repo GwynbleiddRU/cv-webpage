@@ -5,7 +5,7 @@ const ProfileSection = () => {
   
   return (
     <div className="print:break-inside-avoid">
-      <h3 className="text-xl font-semibold text-gray-800 mb-3 print:text-base print:mb-2">
+      <h3 className="text-xl font-bold text-gray-800 mb-3 print:text-base print:mb-2">
         {t("profile.sectionTitle")}
       </h3>
       <div className="space-y-2 text-gray-700 print:space-y-1">
@@ -42,9 +42,11 @@ const ProfileSection = () => {
             </ul>
           </div>
         </div>
-        <p className="mt-2 print:text-xs print:mt-1">
-          {t("profile.additionalInfo")}
-        </p>
+        {t("profile.additionalInfo") ? (
+          <p className="mt-2 print:text-xs print:mt-1">
+            {t("profile.additionalInfo")}
+          </p>
+        ) : null}
       </div>
     </div>
   );

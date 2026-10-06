@@ -5,7 +5,7 @@ const EducationSection = () => {
   
   return (
     <div className="print:break-inside-avoid">
-      <h3 className="text-xl font-semibold text-gray-800 mb-3 print:text-base print:mb-2">
+      <h3 className="text-xl font-bold text-gray-800 mb-3 print:text-base print:mb-2">
         {t("education.sectionTitle")}
       </h3>
       <div className="space-y-4 print:space-y-2">
