@@ -34,6 +34,7 @@ export const useReactToPrint = (options: PrintOptions) => {
     };
 
     const clonedElement = contentElement.cloneNode(true) as HTMLElement;
+    clonedElement.querySelectorAll('.cv-omit-pdf').forEach(el => el.remove());
 
     // Force desktop layout for PDF rendering
     clonedElement.querySelectorAll('.cv-header').forEach(el => {

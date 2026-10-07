@@ -19,6 +19,78 @@ const ProjectsSection = () => {
           gap: "0.5rem"
         }}
       >
+        <a href="https://github.com/GwynbleiddRU/teach-studio" target="_blank" rel="noopener noreferrer" className={cn(
+          "border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
+          "print:break-inside-avoid"
+        )}>
+          <h4 className="font-medium text-gray-900 print:text-sm">
+            {t("projects.teachStudio.title")}
+          </h4>
+          <p className="text-sm text-gray-600 mb-1 print:text-xs print:mb-0">
+            {t("projects.teachStudio.subtitle")}
+          </p>
+          <p className="text-gray-700 text-sm print:text-xs">
+            {t("projects.teachStudio.description")}
+          </p>
+          <p className="text-xs text-gray-500 mt-1 print:text-[10px]">
+            {t("projects.teachStudio.technologies")}
+          </p>
+        </a>
+
+        <a href="https://chem-school.ru" target="_blank" rel="noopener noreferrer" className={cn(
+          "border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
+          "print:break-inside-avoid"
+        )}>
+          <h4 className="font-medium text-gray-900 print:text-sm">
+            {t("projects.chemSchool.title")}
+          </h4>
+          <p className="text-sm text-gray-600 mb-1 print:text-xs print:mb-0">
+            {t("projects.chemSchool.subtitle")}
+          </p>
+          <p className="text-gray-700 text-sm print:text-xs">
+            {t("projects.chemSchool.description")}
+          </p>
+          <p className="text-xs text-gray-500 mt-1 print:text-[10px]">
+            {t("projects.chemSchool.technologies")}
+          </p>
+        </a>
+
+        <a href="https://github.com/GwynbleiddRU/anonymizer" target="_blank" rel="noopener noreferrer" className={cn(
+          "border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
+          "print:break-inside-avoid"
+        )}>
+          <h4 className="font-medium text-gray-900 print:text-sm">
+            {t("projects.anonymizer.title")}
+          </h4>
+          <p className="text-sm text-gray-600 mb-1 print:text-xs print:mb-0">
+            {t("projects.anonymizer.subtitle")}
+          </p>
+          <p className="text-gray-700 text-sm print:text-xs">
+            {t("projects.anonymizer.description")}
+          </p>
+          <p className="text-xs text-gray-500 mt-1 print:text-[10px]">
+            {t("projects.anonymizer.technologies")}
+          </p>
+        </a>
+
+        <a href="https://github.com/food-plan/food-plan-front" target="_blank" rel="noopener noreferrer" className={cn(
+          "border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
+          "print:break-inside-avoid"
+        )}>
+          <h4 className="font-medium text-gray-900 print:text-sm">
+            {t("projects.foodCalendar.title")}
+          </h4>
+          <p className="text-sm text-gray-600 mb-1 print:text-xs print:mb-0">
+            {t("projects.foodCalendar.subtitle")}
+          </p>
+          <p className="text-gray-700 text-sm print:text-xs">
+            {t("projects.foodCalendar.description")}
+          </p>
+          <p className="text-xs text-gray-500 mt-1 print:text-[10px]">
+            {t("projects.foodCalendar.technologies")}
+          </p>
+        </a>
+
         <a href="https://github.com/TuneLike/tunelike-api" target="_blank" rel="noopener noreferrer" className={cn(
           "border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
           "print:break-inside-avoid"

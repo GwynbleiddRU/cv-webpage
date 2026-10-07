@@ -12,6 +12,25 @@ const ExperienceSection = () => {
         <div>
           <div className="flex justify-between mb-1 print:mb-0">
             <h4 className="font-bold text-lg text-gray-900 print:text-base">
+              {t("experience.uralEnergo.company")}
+            </h4>
+            <span className="text-sm text-gray-600 print:text-xs">{t("experience.uralEnergo.dates")}</span>
+          </div>
+          <p className="italic text-gray-700 mb-1 print:text-sm print:mb-0">
+            {t("experience.uralEnergo.position")}
+          </p>
+          <div className="space-y-2 text-gray-700 print:space-y-1">
+            <p className="print:text-xs">
+              {t("experience.uralEnergo.description")}
+            </p>
+            <p className="text-sm mt-1 print:text-[10px] print:mt-0">
+              {t("experience.uralEnergo.technologiesUsed")}
+            </p>
+          </div>
+        </div>
+        <div>
+          <div className="flex justify-between mb-1 print:mb-0">
+            <h4 className="font-bold text-lg text-gray-900 print:text-base">
               {t("experience.tuneLike.company")}
             </h4>
             <span className="text-sm text-gray-600 print:text-xs">01/09/2022 - 29/08/2024</span>

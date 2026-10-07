@@ -34,6 +34,13 @@
     },
     "experience": {
       "sectionTitle": "Professional Experience",
+      "uralEnergo": {
+        "company": "Ural-Energo",
+        "dates": "04/2025 - present",
+        "position": "Self-employed, Lead Frontend Developer",
+        "description": "Sole lead frontend developer of an Angular e-commerce platform. I design new features and connect the work of the API and 1C developers.",
+        "technologiesUsed": "Technologies used: Angular, Atlassian Jira, GitLab"
+      },
       "tuneLike": {
         "company": "TuneLike",
         "position": "CTO, Fullstack Developer & Project Manager",
@@ -41,7 +48,6 @@
         "keyAchievements": "Key Achievements:",
         "achievements": [
           "Implemented a sophisticated algorithm that creates psychological profiles by analyzing acoustic properties and lyrics of user-selected tracks",
-          "Independently handled all aspects of development including project management, backend and frontend implementation",
           "Managed the complete product lifecycle from concept to launch, including mentorship of junior developers",
           "Developed a scalable architecture capable of handling increasing user loads"
         ],
@@ -63,7 +69,8 @@
           "Designing and developing RESTful API architectures",
           "Building high-load system backends with efficient optimization",
           "Full-cycle application development from concept to deployment",
-          "Database design and optimization for performance"
+          "Database design and optimization",
+          "Agentic-driven development"
         ]
       },
       "professionalSkills": {
@@ -76,10 +83,34 @@
           "Technical mentorship and team guidance"
         ]
       },
-      "additionalInfo": "Currently enhancing expertise in MCP to further optimize development processes with AI integration."
+      "additionalInfo": ""
     },
     "projects": {
       "sectionTitle": "Notable Projects",
+      "teachStudio": {
+        "title": "Teach Studio",
+        "subtitle": "White-label school platform",
+        "description": "Multi-tenant product for provisioning a branded school, configuring pages and features, and publishing the site. Teacher and student workflows are based on Chem School.",
+        "technologies": "Technologies: C#, ASP.NET Core, MongoDB, React"
+      },
+      "chemSchool": {
+        "title": "Chem School",
+        "subtitle": "Teacher and student platform",
+        "description": "Courses, lessons, and assignments with submissions, grading, a custom page editor, and an audit log.",
+        "technologies": "Technologies: C#, ASP.NET Core, MongoDB, React"
+      },
+      "anonymizer": {
+        "title": "Local Document Anonymizer",
+        "subtitle": "Offline PDF and image redaction",
+        "description": "Windows desktop application that finds and covers sensitive information in PDFs and images on the local machine. A person reviews the result before it is used.",
+        "technologies": "Technologies: Tauri, React, Python"
+      },
+      "foodCalendar": {
+        "title": "Food Calendar",
+        "subtitle": "Restriction-aware nutrition builder",
+        "description": "Meal-planning application for profiles, foods, meals, and plans that take dietary restrictions into account.",
+        "technologies": "Technologies: C#, ASP.NET Core, MongoDB, React"
+      },
       "tuneLike": {
         "title": "TuneLike - Social Music Platform API",
         "subtitle": "Secure API for a social platform",

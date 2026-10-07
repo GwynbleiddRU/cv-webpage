@@ -72,19 +72,19 @@ const SkillsSection = () => {
           <div className="space-y-2 print:space-y-1">
             <div className="flex justify-between items-center">
               <span className="text-gray-700 print:text-xs">HTML+CSS</span>
-              {renderSkillBar(4)}
+              {renderSkillBar(5)}
             </div>
             <div className="flex justify-between items-center">
               <span className="text-gray-700 print:text-xs">Angular</span>
-              {renderSkillBar(3)}
+              {renderSkillBar(4)}
             </div>
             <div className="flex justify-between items-center">
               <span className="text-gray-700 print:text-xs">React</span>
-              {renderSkillBar(3)}
+              {renderSkillBar(4)}
             </div>
             <div className="flex justify-between items-center">
               <span className="text-gray-700 print:text-xs">Flutter</span>
-              {renderSkillBar(2)}
+              {renderSkillBar(3)}
             </div>
           </div>
         </div>
@@ -96,7 +96,7 @@ const SkillsSection = () => {
           <div className="space-y-2 print:space-y-1">
             <div className="flex justify-between items-center">
               <span className="text-gray-700 print:text-xs">MongoDB</span>
-              {renderSkillBar(4)}
+              {renderSkillBar(5)}
             </div>
             <div className="flex justify-between items-center">
               <span className="text-gray-700 print:text-xs">MSSQL</span>
@@ -108,7 +108,7 @@ const SkillsSection = () => {
             </div>
             <div className="flex justify-between items-center">
               <span className="text-gray-700 print:text-xs">Ubuntu/Nginx</span>
-              {renderSkillBar(3)}
+              {renderSkillBar(4)}
             </div>
           </div>
         </div>
