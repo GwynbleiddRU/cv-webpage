@@ -1,4 +1,5 @@
 import html2pdf from 'html2pdf.js';
+import { loadOverlayFont, readOverlay, writeOverlay, type Overlay, type PageMapping } from '@/lib/pdfOverlay';
 
 interface PrintOptions {
   content: () => HTMLElement | null;
@@ -87,7 +88,8 @@ export const useReactToPrint = (options: PrintOptions) => {
           format: [210, 297],  // A4 size in mm: width: 210mm, height: 297mm
           orientation: 'portrait',  // Portrait orientation
         },
-        pagebreak: { mode: [] }  // Page breaks are placed by paginate()
+        pagebreak: { mode: [] },  // Page breaks are placed by paginate()
+        enableLinks: false  // Links are added by writeOverlay(), from the layout after paginate()
     };
 
     const clonedElement = contentElement.cloneNode(true) as HTMLElement;
@@ -111,16 +113,31 @@ export const useReactToPrint = (options: PrintOptions) => {
     pageHeader?.remove();
     pageHeader?.classList.remove('hidden');
 
+    const font = loadOverlayFont();
+    let overlay: Overlay;
+    let mapping: PageMapping;
+
     html2pdf()
       .from(clonedElement)
       .set(opt)
       .toContainer()
       .then(function () {
-        // Page height as html2pdf slices the canvas in toPdf(), converted back to CSS pixels
+        // Page size as html2pdf slices the canvas in toPdf(), converted back to CSS pixels
         const { scale } = this.opt.html2canvas;
         const canvasWidth = Math.floor(Math.ceil(this.prop.container.getBoundingClientRect().width) * scale);
         const pageHeight = Math.floor(canvasWidth * this.prop.pageSize.inner.ratio) / scale;
         paginate(this.prop.container, pageHeight, pageHeader);
+
+        overlay = readOverlay(this.prop.container, pageHeight);
+        mapping = {
+          mmPerPx: this.prop.pageSize.inner.width / (canvasWidth / scale),
+          marginLeft: this.opt.margin[1],
+          marginTop: this.opt.margin[0],
+        };
+      })
+      .toPdf()
+      .then(async function () {
+        writeOverlay(this.prop.pdf, overlay, mapping, await font);
       })
       .save();
   };
