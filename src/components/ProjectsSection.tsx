@@ -20,7 +20,7 @@ const ProjectsSection = () => {
         }}
       >
         <a href="https://github.com/GwynbleiddRU/teach-studio" target="_blank" rel="noopener noreferrer" className={cn(
-          "border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
+          "cv-project-card border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
           "print:break-inside-avoid"
         )}>
           <h4 className="font-medium text-gray-900 print:text-sm">
@@ -38,7 +38,7 @@ const ProjectsSection = () => {
         </a>
 
         <a href="https://chem-school.ru" target="_blank" rel="noopener noreferrer" className={cn(
-          "border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
+          "cv-project-card border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
           "print:break-inside-avoid"
         )}>
           <h4 className="font-medium text-gray-900 print:text-sm">
@@ -56,7 +56,7 @@ const ProjectsSection = () => {
         </a>
 
         <a href="https://github.com/GwynbleiddRU/anonymizer" target="_blank" rel="noopener noreferrer" className={cn(
-          "border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
+          "cv-project-card border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
           "print:break-inside-avoid"
         )}>
           <h4 className="font-medium text-gray-900 print:text-sm">
@@ -74,7 +74,7 @@ const ProjectsSection = () => {
         </a>
 
         <a href="https://github.com/food-plan/food-plan-front" target="_blank" rel="noopener noreferrer" className={cn(
-          "border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
+          "cv-project-card border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
           "print:break-inside-avoid"
         )}>
           <h4 className="font-medium text-gray-900 print:text-sm">
@@ -92,7 +92,7 @@ const ProjectsSection = () => {
         </a>
 
         <a href="https://github.com/TuneLike/tunelike-api" target="_blank" rel="noopener noreferrer" className={cn(
-          "border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
+          "cv-project-card border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
           "print:break-inside-avoid"
         )}>
           <h4 className="font-medium text-gray-900 print:text-sm">
@@ -110,7 +110,7 @@ const ProjectsSection = () => {
         </a>
 
         <a href="https://github.com/GwynbleiddRU/api-moducart" target="_blank" rel="noopener noreferrer" className={cn(
-          "border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
+          "cv-project-card border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
           "print:break-inside-avoid"
         )}>
           <h4 className="font-medium text-gray-900 print:text-sm">
@@ -128,7 +128,7 @@ const ProjectsSection = () => {
         </a>
         
         <div className={cn(
-          "border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
+          "cv-project-card border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
           "print:break-inside-avoid"
         )}>
           <h4 className="font-medium text-gray-900 print:text-sm">
@@ -146,7 +146,7 @@ const ProjectsSection = () => {
         </div>
         
         <a href="https://github.com/GwynbleiddRU/Nodes" target="_blank" rel="noopener noreferrer" className={cn(
-          "border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
+          "cv-project-card border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
           "print:break-inside-avoid"
         )}>
           <h4 className="font-medium text-gray-900 print:text-sm">
@@ -164,7 +164,7 @@ const ProjectsSection = () => {
         </a>
         
         <a href="https://github.com/GwynbleiddRU/3DStruct" target="_blank" rel="noopener noreferrer" className={cn(
-          "border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
+          "cv-project-card border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
           "print:break-inside-avoid"
         )}>
           <h4 className="font-medium text-gray-900 print:text-sm">
@@ -182,7 +182,7 @@ const ProjectsSection = () => {
         </a>
         
         <a href="https://www.youtube.com/watch?v=VNeDhh1Ge9U" target="_blank" rel="noopener noreferrer" className={cn(
-          "border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
+          "cv-project-card border border-gray-200 rounded-lg p-3 print:p-2 hover:shadow-md transition-shadow",
           "print:break-inside-avoid"
         )}>
           <h4 className="font-medium text-gray-900 print:text-sm">

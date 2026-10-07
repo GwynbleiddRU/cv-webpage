@@ -100,6 +100,13 @@
   }
 }
 
+/* html2canvas (PDF export) finds text baselines with a probe image it appends to <body>.
+   Tailwind's preflight makes images block-level, which moves the probe onto its own line,
+   and every exported line of text is then drawn several pixels too low. */
+body > div > img {
+  display: inline;
+}
+
 .cv-lang-row {
   container-type: inline-size;
 }

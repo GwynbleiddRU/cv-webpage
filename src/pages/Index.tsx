@@ -100,10 +100,8 @@ const Index = () => {
                 <ExperienceSection />
                 <Separator className="my-5 print:my-3" />
                 <SkillsSection />
-                <div className="cv-omit-pdf">
-                  <Separator className="my-5 print:my-3" />
-                  <ProjectsSection />
-                </div>
+                <Separator className="my-5 print:my-3" />
+                <ProjectsSection />
               </>
             )}
           </div>

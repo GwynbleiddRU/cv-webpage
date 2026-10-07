@@ -8,6 +8,7 @@ type CvHeaderProps = {
 const CvHeader = ({ variant = "developer" }: CvHeaderProps) => {
   const { t } = useTranslation();
   const isAi = variant === "ai";
+  const role = isAi ? t("ai.role") : t("header.prefix");
 
   return (
     <div className="cv-lang-row">
@@ -23,7 +24,7 @@ const CvHeader = ({ variant = "developer" }: CvHeaderProps) => {
             ? "text-[17px] font-semibold text-blue-700 mt-0.5 leading-snug print:text-base print:mt-0"
             : "text-xl font-semibold text-blue-700 mt-1 print:text-base print:mt-0"
           }>
-            {isAi ? t("ai.role") : t("header.prefix")}
+            {role}
           </h2>
           {isAi && (
             <p className="text-[13px] leading-snug text-gray-500 mt-1 print:text-xs print:mt-0">
@@ -56,6 +57,15 @@ const CvHeader = ({ variant = "developer" }: CvHeaderProps) => {
       <p className="cv-langs">
         {t("header.languages")}
       </p>
+
+      {/* Header of every PDF page after the first, placed there by lib/print.ts */}
+      <div className="cv-pdf-page-header hidden">
+        <div className="mb-5 flex items-baseline gap-3 border-b border-gray-200 pb-2">
+          <span className="text-lg font-bold leading-tight text-gray-900">{t("header.name")}</span>
+          <span className="text-sm font-semibold leading-snug text-blue-700">{role}</span>
+          <span className="cv-pdf-page-number ml-auto text-sm tabular-nums text-gray-500" />
+        </div>
+      </div>
     </div>
   );
 };

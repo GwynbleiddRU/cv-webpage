@@ -29,9 +29,9 @@ const AiCv = () => {
       </section>
       <Separator className="my-5 print:my-3" />
 
-      <section>
+      <section className="cv-pdf-split">
         <h3 className="text-xl font-bold text-gray-800 mb-3 print:text-base print:mb-2">{t("ai.skillsTitle")}</h3>
-        <div className="space-y-4">
+        <div className="cv-pdf-split space-y-4">
           {skills.map((skill) => (
             <div key={skill.title} className="print:break-inside-avoid">
               <h4 className="font-medium text-gray-900">{skill.title}</h4>
@@ -74,9 +74,9 @@ const AiCv = () => {
       </section>
       <Separator className="my-5 print:my-3" />
 
-      <section>
+      <section className="cv-pdf-split">
         <h3 className="text-xl font-bold text-gray-800 mb-3 print:text-base print:mb-2">{t("ai.methodTitle")}</h3>
-        <ol className="list-none space-y-2 pl-0 text-gray-700">
+        <ol className="cv-pdf-split list-none space-y-2 pl-0 text-gray-700">
           {steps.map((step, index) => (
             <li key={step} className="print:text-sm">
               <span className="mr-1.5 font-semibold text-blue-700">{index + 1}.</span>
