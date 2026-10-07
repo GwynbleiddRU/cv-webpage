@@ -36,13 +36,16 @@ const AiCv = () => {
             <div key={skill.title} className="print:break-inside-avoid">
               <h4 className="font-medium text-gray-900">{skill.title}</h4>
               <p className="mt-1 text-gray-700 print:text-sm">{skill.main}</p>
-              <div className="mt-2 rounded-lg bg-blue-50 px-3 py-2.5 text-sm leading-snug text-[#1e3a5f] print:text-xs">
-                <ul className="m-0 list-disc space-y-1 pl-4">
-                  {skill.extra.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
+              <ul className="m-0 mt-2.5 list-none space-y-1.5 rounded-r-md border-l-[3px] border-blue-500 bg-blue-50/70 py-2.5 pl-3.5 pr-4 text-sm leading-normal text-[#1e3a5f] print:text-xs">
+                {skill.extra.map((item) => (
+                  <li key={item} className="flex gap-2.5">
+                    <span className="flex h-[1.5em] shrink-0 items-center" aria-hidden="true">
+                      <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
+                    </span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>

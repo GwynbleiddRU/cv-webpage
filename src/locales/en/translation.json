@@ -38,8 +38,8 @@
         "company": "Ural-Energo",
         "dates": "04/2025 - present",
         "position": "Self-employed, Lead Frontend Developer",
-        "description": "Sole lead frontend developer of an Angular e-commerce platform. I design new features and connect the work of the API and 1C developers.",
-        "technologiesUsed": "Technologies used: Angular, Atlassian Jira, GitLab"
+        "description": "Sole lead frontend developer of an Angular e-commerce platform. I design and implement new features and connect the work of the API and 1C developers.",
+        "technologiesUsed": "Technologies used: Angular, Atlassian Jira, GitLab, Kontur"
       },
       "tuneLike": {
         "company": "TuneLike",
@@ -186,7 +186,7 @@
         },
         {
           "title": "Write effective requests and instructions",
-          "main": "I turn a vague wish into a concrete task for the AI.",
+          "main": "I turn a vague wish into a concrete task for the AI, my prompts are unambiguously understandable and the result always meets expectations.",
           "extra": [
             "I set the context, source material, limits, answer format, and the criteria for done.",
             "I split hard work into stages so the model is not asked to do everything at once.",
@@ -227,9 +227,10 @@
       "areasTitle": "Where I apply this",
       "areas": [
         { "title": "Documents", "text": "PDF processing, text recognition, structuring information, and anonymizing data." },
-        { "title": "Education", "text": "work on platforms for teachers and schools, and preparing and organizing learning materials." },
-        { "title": "Development", "text": "briefing agents, building and revising functionality, testing, review, and documentation." },
         { "title": "Content", "text": "preparing and editing materials, localization, SEO tasks, and marketing text." },
+        { "title": "Development", "text": "briefing agents, building and revising functionality, testing, review, and documentation." },
+        { "title": "Education", "text": "work on platforms for teachers and schools, and preparing and organizing learning materials." },
+        { "title": "Daily life", "text": "researching and comparing options before decisions, planning trips and schedules, learning new topics, and handling personal paperwork." },
         { "title": "Planning", "text": "turning scattered requirements into structured plans, specifications, and sequences of actions." }
       ],
       "methodTitle": "How I work",
