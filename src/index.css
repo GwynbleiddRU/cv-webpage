@@ -119,3 +119,15 @@ body > div > img {
   font-size: 13px;
   font-size: clamp(8px, calc(100cqi / 27), 13px);
 }
+
+/* Compact PDF: lib/print.ts puts `cv-dense` on its copy of the CV. Text without its own size gets
+   this smaller base; `dense:` utilities (tailwind.config.ts) resize the rest. */
+.cv-dense {
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.cv-dense .cv-langs {
+  margin-top: 0.375rem;
+  font-size: clamp(8px, calc(100cqi / 27), 12px);
+}

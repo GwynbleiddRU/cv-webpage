@@ -1,5 +1,6 @@
 
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
 
 export default {
 	darkMode: ["class"],
@@ -96,5 +97,9 @@ export default {
 			},
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [
+		require("tailwindcss-animate"),
+		// `dense:` styles apply inside `.cv-dense`, which the compact PDF export puts on its copy of the CV
+		plugin(({ addVariant }) => addVariant("dense", ".cv-dense &")),
+	],
 } satisfies Config;

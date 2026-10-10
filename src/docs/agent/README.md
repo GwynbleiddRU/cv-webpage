@@ -13,9 +13,12 @@ https://gwynbleiddru.github.io/cv-webpage. One page holds two CVs in two languag
 | CV | URL hash | Role in the header | Built from |
 |---|---|---|---|
 | Developer | `#developer` (also the default) | Fullstack Developer | `CvHeader`, `ProfileSection`, `EducationSection`, `ExperienceSection`, `SkillsSection`, `ProjectsSection` |
-| AI | `#ai` | AI Implementation and Automation Specialist | `AiCv`: text from the `ai.*` translation keys, plus `EducationSection` and `ExperienceSection` with `compact` |
+| AI | `#ai` | AI Implementation and Automation Specialist | `AiCv`: text from the `ai.*` translation keys, plus `EducationSection` and `ExperienceSection` with `brief` |
 
-English and Russian texts are in `src/locales/{en,ru}/translation.json`. The "Download PDF" button exports the open CV, in the open language, as an A4 PDF.
+English and Russian texts are in `src/locales/{en,ru}/translation.json`. The "Download PDF" button opens a menu and exports the open CV, in the open language, as an A4 PDF in one of two versions:
+
+- the full version, as on the page;
+- a compact version of at most 2 pages, which exists only as a PDF.
 
 The CV text is the owner's real professional record. The PDF is what they send to employers, and recruiting systems (ATS) parse it.
 
@@ -26,7 +29,7 @@ The CV text is the owner's real professional record. The PDF is what they send t
 3. Don't invent CV facts: employers, dates, results, skills, skill levels. If a task needs new wording, write it plainly and tell the owner which text is yours, so they can check it.
 4. Keep the `en` and `ru` files in step: same keys, same array lengths and order. When asked to restyle something, keep its text as it is.
 5. Leave contact details and links alone unless asked.
-6. Keep the look of the exported PDF unless the task is to change it. After any change that can affect the CV layout, export the PDF and look at it (see [pdf-export.md](pdf-export.md)).
+6. Keep the look of the exported PDF unless the task is to change it. After any change that can affect the CV layout, export the PDF and look at it (see [pdf-export.md](pdf-export.md)). Check both versions: a change to shared content or components usually reaches the compact PDF too. The compact PDF must stay within 2 pages for both CVs in both languages.
 7. The owner edits in VS Code while you work. Re-read a file before editing it if it may have changed, and never revert their edits.
 8. Keep scratch files (scripts, exported PDFs, virtual environments) outside the repo, for example in a temp directory.
 
@@ -66,6 +69,11 @@ Don't undo these without asking:
 - In both CVs, Education and then Professional Experience come straight after the profile section.
 - The AI CV has no separate "Practical experience" section. It repeated Profile and "What I do", so its one new point (programming and interface design skills let the owner integrate an AI process into a working application) was moved into Profile's last paragraph.
 - The AI CV shows a short version of those two sections: degree, institution and dates; company, role and dates. Its Education and Experience entries come from the same translation keys and components as the developer CV, so an entry edited there changes both CVs.
-- The developer CV's PDF shows only the first four project cards, which are the newest.
+- The developer CV's full PDF shows only the first four project cards, which are the newest.
+- The compact PDF (at most 2 pages, about 14 px text) keeps every important fact:
+  - **Developer CV:** Technical Skills is replaced by "Tech Stack" (technologies as tags, grouped by area). Notable Projects keeps the four newest project cards, each marked with ↗ as a link. Education descriptions are dropped. Professional Experience stays in full.
+  - **AI CV:** What I do, Where I apply this and How I work are merged into "Key competencies".
+  - **Wording:** the condensed texts were written by an agent from the full ones, and the owner was asked to review them.
+- In the PDF, an experience entry may break across pages between its parts, but its head stays with its description, "Key Achievements" stays with its first bullet, and a "Technologies used" line is never cut off at the top of a page.
 - In the AI CV, the "What I do" details are blue panels with a left border and dot bullets.
 - In both CVs, each Education and Experience entry starts with the organisation's logo: a 40 px SVG in its own column, centred on the name and degree or role. The SVGs were vectorised from the owner's PNGs and normalised to one size (see [architecture.md](architecture.md)).

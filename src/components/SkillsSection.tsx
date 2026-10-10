@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 
-const SkillsSection = () => {
+const SkillsSection = ({ className }: { className?: string }) => {
   const { t } = useTranslation();
   
   const renderSkillBar = (level: number) => {
@@ -28,7 +28,7 @@ const SkillsSection = () => {
   };
 
   return (
-    <div className="print:break-inside-avoid">
+    <div className={cn("print:break-inside-avoid", className)}>
       <h3 className="text-xl font-bold text-gray-800 mb-3 print:text-base print:mb-2">
         {t("skills.sectionTitle")}
       </h3>

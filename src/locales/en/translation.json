@@ -1,9 +1,16 @@
 {
     "index": {
       "documentTitle": "Georgiy_Nosachev_CV",
+      "documentTitleCompact": "Georgiy_Nosachev_CV_Compact",
       "welcomeTitle": "Welcome to my CV",
       "welcomeSubtitle": "updated 07.04.25",
       "downloadButton": "Download PDF",
+      "export": {
+        "full": "Full version",
+        "fullHint": "All sections, as on this page",
+        "compact": "Compact version",
+        "compactHint": "The essentials on up to 2 pages"
+      },
       "navLabel": "Which CV is open",
       "developerLink": "Developer",
       "aiLink": "AI implementation"
@@ -164,8 +171,18 @@
         "Prompt engineering and AI tools expertise"
       ]
     },
+    "stack": {
+      "sectionTitle": "Tech Stack",
+      "groups": [
+        { "title": "Backend", "items": ["C#", ".NET", "ASP.NET Core", "REST API", "SignalR", "Microservices (Ocelot, Consul)", "Python (Requests, BeautifulSoup)"] },
+        { "title": "Frontend & desktop", "items": ["Angular", "React", "HTML/CSS", "Flutter", "Tauri", "WPF"] },
+        { "title": "Data & DevOps", "items": ["MongoDB", "MSSQL (EF, ADO.NET)", "Docker", "Kubernetes", "Nginx", "Ubuntu"] },
+        { "title": "AI", "items": ["Development with AI agents", "Prompt engineering", "Machine learning (audio analysis)"] }
+      ]
+    },
     "ai": {
       "documentTitle": "Georgiy_Nosachev_AI_CV",
+      "documentTitleCompact": "Georgiy_Nosachev_AI_CV_Compact",
       "role": "AI Implementation and Automation Specialist",
       "tagline": "I adapt AI to real tasks for people and businesses",
       "introTitle": "Profile",
@@ -239,6 +256,33 @@
         "I hand over clear instructions for use and for later upkeep."
       ],
       "example": "For example, incoming documents can be handled like this: one agent extracts the information, a second puts it into the required format, a third checks completeness and contradictions, and a person confirms the result before it is used further.",
+      "competenciesTitle": "Key competencies",
+      "competencies": [
+        {
+          "title": "Matching AI to the task",
+          "text": "I clarify the expected result, who will use it and which mistakes are unacceptable; compare models and tools on the real task (answer quality, cost, speed, limits, confidentiality); and decide where one request is enough, where a chain of steps is needed and where a person must take part."
+        },
+        {
+          "title": "Prompts and instructions",
+          "text": "I turn a vague wish into an unambiguous task for the AI, with context, source material, limits, answer format and criteria for done; I split hard work into stages, give repeating work a template and fix the instruction when a mistake keeps appearing."
+        },
+        {
+          "title": "AI agent workflows",
+          "text": "I design processes in which assistants take different roles (gather information, analyze it, produce a result, check it), with a set order of steps, defined hand-offs, a person’s approval for important actions and a plan for missing data, errors and contradictory results, so that a one-off trial becomes a repeatable process. Example: one agent extracts data from incoming documents, a second formats it, a third checks completeness and contradictions, and a person confirms the result."
+        },
+        {
+          "title": "Quality control",
+          "text": "I check that results match the original task, not only that the text sounds convincing; confirmed information stays separate from assumptions, important points are checked against the sources, and a separate review decides what can be used at once and what needs a manual check."
+        },
+        {
+          "title": "AI adoption",
+          "text": "I explain what AI can and cannot do without heavy technical language, prepare instructions, templates and examples for everyday work, and fit tools into work people already do rather than adding an extra burden."
+        }
+      ],
+      "approachLabel": "How I work:",
+      "approach": "task analysis (current manual work, needed result, limits) → approach (one tool, several models or a chain of agents) → instructions (context, rules, examples, result format, quality criteria) → trial on typical and difficult cases → controls (data checks, error handling, approval of important actions) → refinement from the trial results → handover with instructions for use and upkeep.",
+      "areasLabel": "Where I apply this:",
+      "areasBrief": "documents (PDF processing, text recognition, structuring information, anonymization), content (editing, localization, SEO, marketing text), development (briefing agents, building and revising features, testing, review, documentation), education (platforms for teachers and schools, learning materials), daily life (comparing options before decisions, trips and schedules, learning new topics, personal paperwork) and planning (structured plans, specifications and action sequences from scattered requirements).",
       "valueTitle": "How this helps a company",
       "valueLead": "I can take the path from “we want to use AI” to a working process:",
       "value": [

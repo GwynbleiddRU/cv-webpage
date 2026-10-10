@@ -1,18 +1,20 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
-import { ArrowDownToLine } from "lucide-react";
+import { ArrowDownToLine, ChevronDown } from "lucide-react";
 import CvHeader from "@/components/CvHeader";
 import ProfileSection from "@/components/ProfileSection";
 import ExperienceSection from "@/components/ExperienceSection";
 import EducationSection from "@/components/EducationSection";
 import SkillsSection from "@/components/SkillsSection";
 import ProjectsSection from "@/components/ProjectsSection";
+import TechStackSection from "@/components/TechStackSection";
 import AiCv from "@/components/AiCv";
 import { useEffect, useRef, type MouseEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useReactToPrint } from "@/lib/print";
+import { exportPdf, type PdfVariant } from "@/lib/print";
 import { cn } from "@/lib/utils";
 
 const Index = () => {
@@ -27,10 +29,11 @@ const Index = () => {
   };
   const cvRef = useRef<HTMLDivElement>(null);
 
-  const handlePrint = useReactToPrint({
-    content: () => cvRef.current,
-    documentTitle: t(isAi ? "ai.documentTitle" : "index.documentTitle"),
-  });
+  const downloadPdf = (variant: PdfVariant) => {
+    if (!cvRef.current) return;
+    const titleKey = variant === "compact" ? "documentTitleCompact" : "documentTitle";
+    exportPdf(cvRef.current, variant, t(`${isAi ? "ai" : "index"}.${titleKey}`));
+  };
 
   const toggleLanguage = () => {
     const newLang = i18n.language.startsWith("ru") ? "en" : "ru";
@@ -74,10 +77,23 @@ const Index = () => {
                 </>
               )}
             </Button>
-            <Button onClick={handlePrint} className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700">
-              <ArrowDownToLine className="mr-2 h-4 w-4" />
-              {t("index.downloadButton")}
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700">
+                  <ArrowDownToLine className="mr-2 h-4 w-4" />
+                  {t("index.downloadButton")}
+                  <ChevronDown className="ml-1.5 h-4 w-4 opacity-80" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-[var(--radix-dropdown-menu-trigger-width)] min-w-[15rem]">
+                {(["full", "compact"] as const).map((variant) => (
+                  <DropdownMenuItem key={variant} onSelect={() => downloadPdf(variant)} className="flex-col items-start gap-0.5 py-2">
+                    <span className="font-medium">{t(`index.export.${variant}`)}</span>
+                    <span className="text-xs text-muted-foreground">{t(`index.export.${variant}Hint`)}</span>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
 
@@ -92,15 +108,16 @@ const Index = () => {
             ) : (
               <>
                 <CvHeader />
-                <Separator className="my-5 print:my-3" />
+                <Separator className="my-5 print:my-3 dense:my-4" />
                 <ProfileSection />
-                <Separator className="my-5 print:my-3" />
+                <Separator className="my-5 print:my-3 dense:my-4" />
                 <EducationSection />
-                <Separator className="my-5 print:my-3" />
+                <Separator className="my-5 print:my-3 dense:my-4" />
                 <ExperienceSection />
-                <Separator className="my-5 print:my-3" />
-                <SkillsSection />
-                <Separator className="my-5 print:my-3" />
+                <Separator className="my-5 print:my-3 dense:my-4" />
+                <SkillsSection className="cv-full-only" />
+                <TechStackSection className="cv-compact-only hidden" />
+                <Separator className="my-5 print:my-3 dense:my-4" />
                 <ProjectsSection />
               </>
             )}
