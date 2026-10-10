@@ -13,7 +13,7 @@ https://gwynbleiddru.github.io/cv-webpage. One page holds two CVs in two languag
 | CV | URL hash | Role in the header | Built from |
 |---|---|---|---|
 | Developer | `#developer` (also the default) | Fullstack Developer | `CvHeader`, `ProfileSection`, `EducationSection`, `ExperienceSection`, `SkillsSection`, `ProjectsSection` |
-| AI | `#ai` | AI Implementation and Automation Specialist | `AiCv`, with all text from the `ai.*` translation keys |
+| AI | `#ai` | AI Implementation and Automation Specialist | `AiCv`: text from the `ai.*` translation keys, plus `EducationSection` and `ExperienceSection` with `compact` |
 
 English and Russian texts are in `src/locales/{en,ru}/translation.json`. The "Download PDF" button exports the open CV, in the open language, as an A4 PDF.
 
@@ -63,5 +63,9 @@ Don't undo these without asking:
 - Language buttons use flags from the `flag-icons` package, because emoji flags don't render on Windows.
 - The PDF is page images from html2pdf with an invisible text layer on top. It looks exactly like the site and recruiting systems can still read it. A PDF with drawn text was rejected because it needs a bundled font, which would change the typeface.
 - Page breaks, the running header with "n / N" page numbers, and the PDF links are made by our own code, not by html2pdf's options.
+- In both CVs, Education and then Professional Experience come straight after the profile section.
+- The AI CV has no separate "Practical experience" section. It repeated Profile and "What I do", so its one new point (programming and interface design skills let the owner integrate an AI process into a working application) was moved into Profile's last paragraph.
+- The AI CV shows a short version of those two sections: degree, institution and dates; company, role and dates. Its Education and Experience entries come from the same translation keys and components as the developer CV, so an entry edited there changes both CVs.
 - The developer CV's PDF shows only the first four project cards, which are the newest.
 - In the AI CV, the "What I do" details are blue panels with a left border and dot bullets.
+- In both CVs, each Education and Experience entry starts with the organisation's logo: a 40 px SVG in its own column, centred on the name and degree or role. The SVGs were vectorised from the owner's PNGs and normalised to one size (see [architecture.md](architecture.md)).

@@ -1,6 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { Separator } from "@/components/ui/separator";
 import CvHeader from "@/components/CvHeader";
+import EducationSection from "@/components/EducationSection";
+import ExperienceSection from "@/components/ExperienceSection";
 
 type Skill = { title: string; main: string; extra: string[] };
 type Area = { title: string; text: string };
@@ -9,7 +11,6 @@ const AiCv = () => {
   const { t } = useTranslation();
   const intro = t("ai.intro", { returnObjects: true }) as string[];
   const skills = t("ai.skills", { returnObjects: true }) as Skill[];
-  const practice = t("ai.practice", { returnObjects: true }) as string[];
   const areas = t("ai.areas", { returnObjects: true }) as Area[];
   const steps = t("ai.steps", { returnObjects: true }) as string[];
   const value = t("ai.value", { returnObjects: true }) as string[];
@@ -27,6 +28,12 @@ const AiCv = () => {
           ))}
         </div>
       </section>
+      <Separator className="my-5 print:my-3" />
+
+      <EducationSection compact />
+      <Separator className="my-5 print:my-3" />
+
+      <ExperienceSection compact />
       <Separator className="my-5 print:my-3" />
 
       <section className="cv-pdf-split">
@@ -47,16 +54,6 @@ const AiCv = () => {
                 ))}
               </ul>
             </div>
-          ))}
-        </div>
-      </section>
-      <Separator className="my-5 print:my-3" />
-
-      <section className="print:break-inside-avoid">
-        <h3 className="text-xl font-bold text-gray-800 mb-3 print:text-base print:mb-2">{t("ai.practiceTitle")}</h3>
-        <div className="space-y-2 text-gray-700">
-          {practice.map((paragraph) => (
-            <p key={paragraph} className="print:text-sm">{paragraph}</p>
           ))}
         </div>
       </section>

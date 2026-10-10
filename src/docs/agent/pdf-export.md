@@ -29,6 +29,7 @@ html2pdf's own page breaking and link handling are switched off (`pagebreak: { m
 - Every element is treated as unbreakable. If it would cross a page boundary and fits on one page, a block is inserted before it. The block fills the rest of the page and carries the running header for the next one.
 - An element with the class `cv-pdf-split` may break between its children. Mark every level you want to break through: in `AiCv`, both the `<section>` and the list inside it carry the class.
 - A heading (`h1` to `h6`) is measured together with the first block after it, so a heading never ends a page alone.
+- A divider between sections (`<Separator />`, which renders `role="none"` and `data-orientation="horizontal"`) is removed when it would open a page, since the running header already separates the pages. A divider at the bottom of a page stays.
 - A page whose break falls in blank space still gets its header, placed before its first element.
 - Elements taller than a page are cut wherever the page ends.
 - The inserted blocks become siblings of the element they push down. Inside a CSS grid they would become grid cells and break the grid, so never mark a grid `cv-pdf-split`. Grids always stay whole.
@@ -49,6 +50,7 @@ html2pdf's own page breaking and link handling are switched off (`pagebreak: { m
 
 ## html2canvas traps
 
+- html2canvas draws an `<img>` only when it has an intrinsic size (`naturalWidth` and `naturalHeight` above 0), and uses that size as the source rectangle. An SVG without `width` and `height` attributes may have no intrinsic size, so keep them on every SVG used in the CV. html2canvas also ignores `object-fit`, so give an image a box with its own aspect ratio.
 - `src/index.css` contains `body > div > img { display: inline; }`. html2canvas finds text baselines with an `<img>` it adds to `<body>`, and Tailwind's base styles make images block-level. Without the rule, every line of PDF text is drawn about 6 px too low, and bullets and icons look misaligned. Keep it.
 - The export uses screen styles, so `print:*` utilities do nothing in it.
 - Responsive prefixes (`sm:`, `md:`) follow the window of the browser doing the export, not the 190 mm container. Exported from a phone-width window, `sm:grid-cols-2` becomes one column in the PDF. For anything that must look the same in the PDF, use width-independent styles (like the inline `repeat(auto-fit, minmax(250px, 1fr))` grids), or force the layout on the clone in `handlePrint` as is done for `.cv-header`. Known open case: the AI CV's "Where I apply this" grid (`grid-cols-1 sm:grid-cols-2`) turns into one column when exported from a narrow window.

@@ -6,10 +6,13 @@ interface PrintOptions {
   documentTitle?: string;
 }
 
+// A horizontal <Separator /> between sections
+const DIVIDER = '[role="none"][data-orientation="horizontal"]';
+
 // Moves every element that a page break would cut onto the next page, like html2pdf's
 // "avoid-all" mode, except that a `.cv-pdf-split` container may break between its children
 // and a heading moves together with the block that follows it. Every page after the first
-// starts with a copy of `pageHeader`.
+// starts with a copy of `pageHeader`, which also replaces a divider that would open the page.
 const paginate = (root: HTMLElement, pageHeight: number, pageHeader: Element | null) => {
   const origin = root.getBoundingClientRect().top;
   const topOf = (el: Element) => el.getBoundingClientRect().top - origin;
@@ -45,6 +48,12 @@ const paginate = (root: HTMLElement, pageHeight: number, pageHeader: Element | n
 
   root.querySelectorAll('*').forEach(el => {
     const page = Math.floor(topOf(el) / pageHeight);
+    const opensPage = !pagesWithHeader.has(page) ||
+      Math.floor((el.getBoundingClientRect().bottom - origin) / pageHeight) !== page;
+    if (opensPage && el.matches(DIVIDER)) {
+      el.remove();
+      return;
+    }
     if (!pagesWithHeader.has(page)) startPage(el, page);
     if (el.classList.contains('cv-pdf-split')) return;
 

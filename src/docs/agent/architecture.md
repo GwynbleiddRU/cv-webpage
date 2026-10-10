@@ -12,11 +12,12 @@ React 18 and TypeScript 5 on Vite 5 (`@vitejs/plugin-react-swc`), Tailwind CSS 3
 | `src/App.tsx` | `BrowserRouter` with `basename="/cv-webpage"`. `/` renders `Index`; every other path renders `NotFound`. |
 | `src/pages/Index.tsx` | The page: links that switch CV, the language button, the "Download PDF" button, and the CV body (`cvRef`, a white card up to 800px wide). |
 | `src/components/CvHeader.tsx` | Header shared by both CVs (`variant="developer"` or `"ai"`): name, role, tagline (AI only), contacts, languages line, and the hidden template for the header of PDF pages 2+. |
-| `src/components/AiCv.tsx` | The whole AI CV, rendered from `ai.*` translation arrays. |
-| `src/components/{Profile,Education,Experience,Skills,Projects}Section.tsx` | Sections of the developer CV: hand-written JSX that takes its text from the translations. |
+| `src/components/AiCv.tsx` | The AI CV. Its own sections are rendered from `ai.*` translation arrays; after Profile it includes `EducationSection` and `ExperienceSection` with `compact`. |
+| `src/components/{Profile,Education,Experience,Skills,Projects}Section.tsx` | Sections of the developer CV: hand-written JSX that takes its text from the translations. With the `compact` prop, `EducationSection` keeps only degree, institution and dates, and `ExperienceSection` keeps only company, role and dates; the AI CV uses this. |
 | `src/lib/print.ts` | PDF export: `useReactToPrint` (an old name; it has nothing to do with the react-to-print package) and `paginate`. |
 | `src/lib/pdfOverlay.ts` | The invisible text layer and the links of the PDF. |
 | `src/assets/fonts/` | Noto Sans subset used by the PDF text layer, with its OFL licence. |
+| `src/assets/images/` | Organisation logos shown in Education and Experience (`*.svg`). The PNGs next to them are the owner's originals the SVGs were traced from; the app doesn't use them. |
 | `src/i18n.ts` | i18next set-up. |
 | `src/locales/{en,ru}/translation.json` | All CV text. |
 | `src/index.css` | Tailwind layers, theme variables, and two custom rules: the html2canvas image fix and the `.cv-lang-row` / `.cv-langs` container query. |
@@ -50,6 +51,14 @@ Not used by the app: `src/hooks/useReactToPrint.ts` (an older export; the live o
 - Skill names and levels (bars out of 5): `SkillsSection.tsx`.
 - Project cards, their order and their links: `ProjectsSection.tsx`. The newest come first, and the PDF keeps the first four.
 - Contact details and links: `CvHeader.tsx`.
+- Organisation logos: imported in `EducationSection.tsx` and `ExperienceSection.tsx`, one per entry. A new logo should follow the existing SVGs:
+  - one path in the brand colour, with `fill-rule="evenodd"` and the white parts cut out;
+  - `viewBox="0 0 100 100"` plus `width="128" height="128"` (the PDF export needs that size, see [pdf-export.md](pdf-export.md));
+  - round logos fill the frame, and square marks fill 90% of it so they look the same size;
+  - coordinates rounded to one decimal.
+
+  The existing ones were traced from the owner's PNGs with potrace, with traced circles replaced by exact ones; each is 0.2–3 KB.
+- Education years: `EducationSection.tsx`. Job dates for TuneLike and Gazstroyprom: `ExperienceSection.tsx`. Only Ural-Energo's dates are in the translations (`experience.uralEnergo.dates`).
 
 ## Styling
 
