@@ -49,6 +49,7 @@ There are no automated tests. A change is verified by the type check, lint, and 
 
 - Windows 11, with both PowerShell and Git Bash. The repo path contains Cyrillic (`…\Репозиторий\…`): quote paths, and expect some console tools to print it garbled.
 - Microsoft Edge is installed and Chrome is not, so headless browser checks run on Edge ([pdf-export.md](pdf-export.md) has the script).
+- Windows display scaling is about 110%. Playwright's WebKit inherits it (`devicePixelRatio` 1.104, `innerWidth` 1159 in a 1280 px window), so its results can differ from real Safari. Apple's own WebKit can't be tested here at all.
 - Python 3 is installed without extra packages. Create a virtual environment in a temp directory for tools such as `pdfminer.six` or `fonttools`.
 - Git warns about LF being replaced by CRLF in edited files; that is expected.
 
