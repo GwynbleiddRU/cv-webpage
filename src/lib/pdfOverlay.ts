@@ -21,7 +21,9 @@ const asciiArrows = (text: string) => text.replace(/→/g, '->').replace(/←/g,
 
 // Fonts are read as binary strings, which jsPDF recognises by the TrueType signature.
 export const loadOverlayFont = async () => {
-  const bytes = new Uint8Array(await (await fetch(fontUrl)).arrayBuffer());
+  const response = await fetch(fontUrl);
+  if (!response.ok) throw new Error(`HTTP ${response.status} for ${fontUrl}`);
+  const bytes = new Uint8Array(await response.arrayBuffer());
   return Array.from(bytes, byte => String.fromCharCode(byte)).join('');
 };
 
@@ -97,7 +99,8 @@ export const readOverlay = (root: HTMLElement, pageHeight: number): Overlay => {
   return { runs, links };
 };
 
-export const writeOverlay = (pdf: jsPDF, { runs, links }: Overlay, map: PageMapping, font: string) => {
+// Writes the text layer (skipped when `font` is null) and the links
+export const writeOverlay = (pdf: jsPDF, { runs, links }: Overlay, map: PageMapping, font: string | null) => {
   const pageCount = pdf.getNumberOfPages();
   const toPage = (page: number) => {
     if (page >= pageCount) return false;
@@ -106,10 +109,12 @@ export const writeOverlay = (pdf: jsPDF, { runs, links }: Overlay, map: PageMapp
   };
   const mm = (px: number) => px * map.mmPerPx;
 
-  pdf.addFileToVFS(FONT_FILE, font);
-  pdf.addFont(FONT_FILE, FONT_NAME, 'normal');
-  pdf.setFont(FONT_NAME, 'normal');
-  for (const run of runs) {
+  if (font) {
+    pdf.addFileToVFS(FONT_FILE, font);
+    pdf.addFont(FONT_FILE, FONT_NAME, 'normal');
+    pdf.setFont(FONT_NAME, 'normal');
+  }
+  for (const run of font ? runs : []) {
     if (!toPage(run.page)) continue;
     const text = asciiArrows(run.text);
     pdf.setFontSize(mm(run.fontSize) * 72 / 25.4);

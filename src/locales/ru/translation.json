@@ -2,14 +2,14 @@
     "index": {
       "documentTitle": "Георгий_Носачев_CV",
       "documentTitleCompact": "Георгий_Носачев_CV_кратко",
-      "welcomeTitle": "Мое резюме",
-      "welcomeSubtitle": "обновлено 07.04.25",
       "downloadButton": "Скачать PDF",
       "export": {
         "full": "Полная версия",
         "fullHint": "Все разделы, как на странице",
         "compact": "Краткая версия",
-        "compactHint": "Главное — не больше 2 страниц"
+        "compactHint": "Главное — не больше 2 страниц",
+        "busy": "Готовим PDF…",
+        "failed": "Не удалось создать PDF. Попробуйте ещё раз."
       },
       "navLabel": "Какое резюме открыто",
       "developerLink": "Разработчик",

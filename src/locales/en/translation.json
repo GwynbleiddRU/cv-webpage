@@ -2,14 +2,14 @@
     "index": {
       "documentTitle": "Georgiy_Nosachev_CV",
       "documentTitleCompact": "Georgiy_Nosachev_CV_Compact",
-      "welcomeTitle": "Welcome to my CV",
-      "welcomeSubtitle": "updated 07.04.25",
       "downloadButton": "Download PDF",
       "export": {
         "full": "Full version",
         "fullHint": "All sections, as on this page",
         "compact": "Compact version",
-        "compactHint": "The essentials on up to 2 pages"
+        "compactHint": "The essentials on up to 2 pages",
+        "busy": "Preparing PDF…",
+        "failed": "Couldn't create the PDF. Please try again."
       },
       "navLabel": "Which CV is open",
       "developerLink": "Developer",

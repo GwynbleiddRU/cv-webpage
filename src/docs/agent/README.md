@@ -32,18 +32,31 @@ The CV text is the owner's real professional record. The PDF is what they send t
 6. Keep the look of the exported PDF unless the task is to change it. After any change that can affect the CV layout, export the PDF and look at it (see [pdf-export.md](pdf-export.md)). Check both versions: a change to shared content or components usually reaches the compact PDF too. The compact PDF must stay within 2 pages for both CVs in both languages.
 7. The owner edits in VS Code while you work. Re-read a file before editing it if it may have changed, and never revert their edits.
 8. Keep scratch files (scripts, exported PDFs, virtual environments) outside the repo, for example in a temp directory.
+9. Keep the site light; it was audited for speed (see "Performance" below). Don't import `@/lib/print` statically, don't bring back the `flag-icons` stylesheet, and add a shadcn/ui component or a package only when the code uses it.
 
 ## Commands
 
 | Task | Command | Notes |
 |---|---|---|
-| Install | `npm install` | `package-lock.json` is the lockfile in use; `bun.lockb` is a leftover. |
+| Install | `npm install` | `package-lock.json` is the lockfile. |
 | Dev server | `npm run dev` | http://localhost:8080/cv-webpage (add `#ai` for the AI CV). The owner usually has it running already, so check port 8080 before starting another. |
 | Type check | `npx tsc --noEmit -p tsconfig.app.json` | Must pass. |
-| Lint | `npx eslint <changed files>` | `npm run lint` reports 3 errors that predate this work, in `src/components/ui/command.tsx`, `src/components/ui/textarea.tsx` and `tailwind.config.ts`. Don't count them against your change. |
-| Test build | `npx vite build --outDir <temp dir>` | Plain `npm run build` overwrites `docs/` (rule 2). |
+| Lint | `npm run lint` | Must report 0 errors. Its one warning, in `src/components/ui/button.tsx` (`buttonVariants` exported next to the component), is the usual shadcn/ui pattern. |
+| Test build | `npx vite build --outDir <temp dir>` | Plain `npm run build` overwrites `docs/` (rule 2). Vite warns that one chunk is over 500 kB: that is the PDF export, which loads after the page (see "Performance"). |
 
 There are no automated tests. A change is verified by the type check, lint, and looking at the page and the exported PDF.
+
+## Performance
+
+Measured on a simulated mid-range phone (CPU 4× slower, 1.6 Mbit/s, 150 ms latency, empty cache) when the site was audited:
+
+| Part | Size (gzip) | Loads |
+|---|---|---|
+| CSS | about 6 KB | before the page shows |
+| Main script | about 137 KB | before the page shows |
+| PDF export (`print-*.js`: html2pdf, jsPDF, html2canvas) | about 191 KB | after the page has rendered, from `Index.tsx`, so it is ready before anyone picks a version |
+
+The page showed its content after about 1.4 s (2.97 s before the audit, when the flag stylesheet and the PDF code loaded with the page).
 
 ## Environment
 
@@ -64,7 +77,9 @@ There are no automated tests. A change is verified by the type check, lint, and 
 
 Don't undo these without asking:
 
-- Language buttons use flags from the `flag-icons` package, because emoji flags don't render on Windows.
+- The language button shows a flag image from the `flag-icons` package (`flags/4x3/gb.svg`, `flags/4x3/ru.svg`, imported in `Index.tsx`), because emoji flags don't render on Windows. Only those two files are imported: the package's stylesheet was most of the site's CSS (about 85 of 97 KB gzipped) and added about 140 flag files to the build.
+- While a PDF is being made, the download button says "Preparing PDF…" and the menu's versions are disabled; a failed export shows a message (Sonner toast) and the button returns to normal.
+- The site's icons are sized for their use: `favicon.ico` holds 16, 32 and 48 px images, and `favicon.png` is the 180 px icon for phones' home screens.
 - The PDF is page images from html2pdf with an invisible text layer on top. It looks exactly like the site and recruiting systems can still read it. A PDF with drawn text was rejected because it needs a bundled font, which would change the typeface.
 - Page breaks, the running header with "n / N" page numbers, and the PDF links are made by our own code, not by html2pdf's options.
 - In both CVs, Education and then Professional Experience come straight after the profile section.

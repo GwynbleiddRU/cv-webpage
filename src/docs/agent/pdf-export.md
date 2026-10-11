@@ -1,6 +1,8 @@
 # PDF export
 
-The "Download PDF" button in `Index.tsx` opens a menu with two versions. Each calls `exportPdf(cvElement, variant, fileName)` from `src/lib/print.ts`. That builds the PDF with html2pdf.js, which screenshots the CV with html2canvas and places the screenshots on A4 pages with jsPDF. Our own code adds the page breaks, a running header, an invisible text layer and the links.
+The "Download PDF" button in `Index.tsx` opens a menu with two versions. Each calls `exportPdf(cvElement, variant, fileName)` from `src/lib/print.ts`, which settles once the file is saved. That builds the PDF with html2pdf.js, which screenshots the CV with html2canvas and places the screenshots on A4 pages with jsPDF. Our own code adds the page breaks, a running header, an invisible text layer and the links.
+
+`src/lib/print.ts` and everything it imports is a separate file (`print-*.js`, about 191 KB gzipped, more than the rest of the site), which `Index.tsx` starts loading once the page has rendered. Import it only through `loadPrint()` there, never statically, or it loads with the page again.
 
 ## The two versions
 
@@ -45,11 +47,18 @@ Everything runs in `exportPdf` in `src/lib/print.ts`:
 7. `writeOverlay()` writes the recorded text as invisible text and adds the links.
 8. `save()` downloads `<fileName>.pdf`.
 
-Right after `paginate()` in step 4, `fitSvgImages()` from `src/lib/svgImages.ts` replaces each SVG `<img>` in the container with one whose SVG has exactly the size it is shown at, so that Safari doesn't crop it (see "html2canvas traps"). SVG files that aren't data URLs (on the dev server) are read from text that `prefetchSvgImages()` fetches when the CV is shown; `Index.tsx` calls it.
+Right after `paginate()` in step 4, `fitSvgImages()` from `src/lib/svgImages.ts` replaces each SVG `<img>` in the container with one whose SVG has exactly the size it is shown at, so that Safari doesn't crop it (see "html2canvas traps"). It reads the SVG from the image's data URL (`src/lib/logos.ts`).
 
 html2pdf's own page breaking and link handling are switched off (`pagebreak: { mode: [] }`, `enableLinks: false`). Its link handling records positions before `paginate()` moves content, which puts links in the wrong place. Don't switch either back on.
 
-Keep the export synchronous up to html2canvas, and don't restructure the markup it copies just for the export. In Playwright's Windows WebKit, a wait before rendering (such as a timer) and inline-SVG logos made html2canvas lay out its copy about 10% smaller, with words run together. Production builds of the current code render normally there; check any such change in a production build (see the environment notes in [README.md](README.md)).
+Don't add waits before rendering, and don't restructure the markup html2canvas copies just for the export. In Playwright's Windows WebKit, a timer before rendering and inline-SVG logos made html2canvas lay out its copy about 10% smaller, with words run together. The one wait the export has is for the PDF code, if someone picks a version before it has loaded; exports made that way were checked in Edge, Playwright's WebKit and Firefox and came out normal. Check any such change in a production build (see the environment notes in [README.md](README.md)).
+
+### Progress and failures
+
+- While an export runs, `Index.tsx` shows "Preparing PDF…" on the button and disables the menu's versions, so a second export can't start.
+- `exportPdf`'s promise must follow the html2pdf steps. They form html2pdf's own promise subclass on a bundled polyfill: its `then()` follows the steps, but its `thenExternal()` returns a promise that is already settled, which made the progress state end at once. `print.ts` therefore wraps the chain through `then()`.
+- If an export fails, `print.ts` removes html2pdf's overlay (a full-page, invisible, fixed layer that would otherwise catch every click) and `Index.tsx` shows a message.
+- If the text-layer font can't be loaded, the PDF is still saved, with its pages and links but no text layer.
 
 ## Page breaks (`paginate`)
 
@@ -158,6 +167,8 @@ Do this after any change to CV markup, styles, translations or the export code. 
    ```
 
 5. After changes to Tailwind classes, also export once from a production build: `npx vite build --outDir <temp dir>`, then `node node_modules/vite/bin/vite.js preview --outDir <temp dir> --port 8093 --strictPort`. Its PDFs should be byte-identical to the dev server's.
+   - **Failure handling:** make `HTMLCanvasElement.prototype.getContext` throw while `.html2pdf__overlay` exists. Throwing from `drawImage` doesn't work, because html2canvas swallows errors while drawing images. Expect the message, no overlay left, and a page that still responds.
+   - **Progress state:** exports take well under a second here. Hold back the font file (`context.route` on `NotoSans-Regular-subset.ttf`, not the `…ttf?url` module on the dev server) to keep one running while you check the button and the disabled menu items.
 6. After changes to images, icons, text handling or the export code, check the Safari workarounds. Apple's WebKit isn't available on Windows, and Playwright's WebKit for Windows (`PLAYWRIGHT_BROWSERS_PATH=<temp dir> node node_modules/playwright-core/cli.js install webkit`) doesn't have these problems. Instead, simulate them in Edge:
    - **Images:** in `context.addInitScript`, redefine the `naturalWidth` and `naturalHeight` getters on `HTMLImageElement.prototype`. For a connected image whose source is `data:image/svg+xml…` or `….svg`, return its rounded shown size (`getBoundingClientRect()`), and count the reads where that differs from the real value by more than 1. Then export.
      - **Without the fix**, this reproduces the owner's iPhone PDFs to the pixel: each logo shows only its top-left part.

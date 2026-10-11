@@ -130,25 +130,21 @@ const paginate = (root: HTMLElement, pageHeight: number, pageHeader: Element | n
   });
 };
 
-// Saves the CV in `source` as an A4 PDF called `<fileName>.pdf`
-export const exportPdf = (source: HTMLElement, variant: PdfVariant, fileName: string) => {
+// Saves the CV in `source` as an A4 PDF called `<fileName>.pdf`; settles once the file is saved
+export const exportPdf = (source: HTMLElement, variant: PdfVariant, fileName: string): Promise<void> => {
   const opt = {
-      margin: [10, 10, 10, 10],  // Page margin (top, left, bottom, right)
-      filename: `${fileName}.pdf`,
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { 
-        scale: 2,  // Higher scale for better image quality
-        useCORS: true,
-        letterRendering: true,
-        logging: false
-      },
-      jsPDF: { 
-        unit: 'mm', 
-        format: [210, 297],  // A4 size in mm: width: 210mm, height: 297mm
-        orientation: 'portrait',  // Portrait orientation
-      },
-      pagebreak: { mode: [] },  // Page breaks are placed by paginate()
-      enableLinks: false  // Links are added by writeOverlay(), from the layout after paginate()
+    margin: [10, 10, 10, 10],  // Page margin in mm (top, left, bottom, right)
+    filename: `${fileName}.pdf`,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: {
+      scale: 2,  // Canvas pixels per CSS pixel
+      useCORS: true,
+      letterRendering: true,
+      logging: false,
+    },
+    jsPDF: { unit: 'mm', format: [210, 297], orientation: 'portrait' },  // A4
+    pagebreak: { mode: [] },  // Page breaks are placed by paginate()
+    enableLinks: false,  // Links are added by writeOverlay(), from the layout after paginate()
   };
 
   const clonedElement = source.cloneNode(true) as HTMLElement;
@@ -179,11 +175,15 @@ export const exportPdf = (source: HTMLElement, variant: PdfVariant, fileName: st
   pageHeader?.remove();
   pageHeader?.classList.remove('hidden');
 
-  const font = loadOverlayFont();
+  // Without the font the PDF still gets its pages and links, just no text layer
+  const font = loadOverlayFont().catch((error: unknown) => {
+    console.warn('PDF export: no font for the text layer', error);
+    return null;
+  });
   let overlay: Overlay;
   let mapping: PageMapping;
 
-  html2pdf()
+  const worker = html2pdf()
     .from(clonedElement)
     .set(opt)
     .toContainer()
@@ -207,4 +207,18 @@ export const exportPdf = (source: HTMLElement, variant: PdfVariant, fileName: st
       writeOverlay(this.prop.pdf, overlay, mapping, await font);
     })
     .save();
+
+  // html2pdf's steps form its own promise subclass (on a bundled polyfill): its then() follows the
+  // steps, while thenExternal() returns a promise that is already settled
+  return new Promise<void>((resolve, reject) => {
+    worker.then(
+      () => resolve(),
+      (error: unknown) => {
+        // html2pdf removes its overlay only after a successful render; a leftover one, though
+        // invisible, would cover the page and catch every click
+        document.querySelectorAll('.html2pdf__overlay').forEach(el => el.remove());
+        reject(error);
+      },
+    );
+  });
 };

@@ -2,7 +2,10 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
-import { ArrowDownToLine, ChevronDown } from "lucide-react";
+import { ArrowDownToLine, ChevronDown, Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import gbFlag from "flag-icons/flags/4x3/gb.svg";
+import ruFlag from "flag-icons/flags/4x3/ru.svg";
 import CvHeader from "@/components/CvHeader";
 import ProfileSection from "@/components/ProfileSection";
 import ExperienceSection from "@/components/ExperienceSection";
@@ -11,18 +14,30 @@ import SkillsSection from "@/components/SkillsSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import TechStackSection from "@/components/TechStackSection";
 import AiCv from "@/components/AiCv";
-import { useEffect, useRef, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
-import { exportPdf, type PdfVariant } from "@/lib/print";
-import { prefetchSvgImages } from "@/lib/svgImages";
+import type { PdfVariant } from "@/lib/print";
 import { cn } from "@/lib/utils";
+
+// The PDF export (html2pdf with jsPDF and html2canvas) is most of the site's code, so it is a file of its
+// own, loaded once the page has rendered. It is ready long before anyone picks a version, so an export
+// still starts straight from the click (see src/docs/agent/pdf-export.md).
+let printModule: Promise<typeof import("@/lib/print")> | undefined;
+const loadPrint = () =>
+  (printModule ??= import("@/lib/print").catch((error) => {
+    printModule = undefined;  // Tried again by the next export
+    throw error;
+  }));
+
+const flagClass = "mr-2 h-[1em] w-[1.333333em]";
 
 const Index = () => {
   const { t, i18n } = useTranslation();
   const { hash } = useLocation();
   const navigate = useNavigate();
   const isAi = hash === "#ai";
+  const [exporting, setExporting] = useState(false);
 
   const openProfile = (nextHash: string) => (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
@@ -31,9 +46,18 @@ const Index = () => {
   const cvRef = useRef<HTMLDivElement>(null);
 
   const downloadPdf = (variant: PdfVariant) => {
-    if (!cvRef.current) return;
+    const cv = cvRef.current;
+    if (!cv || exporting) return;
+    setExporting(true);
     const titleKey = variant === "compact" ? "documentTitleCompact" : "documentTitle";
-    exportPdf(cvRef.current, variant, t(`${isAi ? "ai" : "index"}.${titleKey}`));
+    const fileName = t(`${isAi ? "ai" : "index"}.${titleKey}`);
+    loadPrint()
+      .then(({ exportPdf }) => exportPdf(cv, variant, fileName))
+      .catch((error) => {
+        console.error("PDF export failed", error);
+        toast.error(t("index.export.failed"));
+      })
+      .finally(() => setExporting(false));
   };
 
   const toggleLanguage = () => {
@@ -42,14 +66,14 @@ const Index = () => {
   };
 
   useEffect(() => {
-    document.title = t(isAi ? "ai.documentTitle" : "index.documentTitle");
-    window.scrollTo(0, 0);
-  }, [isAi, i18n.language, t]);
+    loadPrint().catch(() => undefined);  // A failure is reported if someone exports
+  }, []);
 
-  // SVG files the PDF export rewrites (see svgImages.ts); in a production build they are data URLs
   useEffect(() => {
-    if (cvRef.current) prefetchSvgImages(cvRef.current);
-  }, [isAi]);
+    document.title = t(isAi ? "ai.documentTitle" : "index.documentTitle");
+    document.documentElement.lang = i18n.resolvedLanguage ?? "en";
+    window.scrollTo(0, 0);
+  }, [isAi, i18n.language, i18n.resolvedLanguage, t]);
 
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     cn(
@@ -73,27 +97,27 @@ const Index = () => {
             <Button onClick={toggleLanguage} variant="outline" className="w-full sm:w-auto">
               {i18n.language.startsWith("ru") ? (
                 <>
-                  <span className="fi fi-gb mr-2" aria-hidden="true" />
+                  <img src={gbFlag} alt="" className={flagClass} />
                   English
                 </>
               ) : (
                 <>
-                  <span className="fi fi-ru mr-2" aria-hidden="true" />
+                  <img src={ruFlag} alt="" className={flagClass} />
                   Русский
                 </>
               )}
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700">
-                  <ArrowDownToLine className="mr-2 h-4 w-4" />
-                  {t("index.downloadButton")}
+                <Button className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700" aria-busy={exporting}>
+                  {exporting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <ArrowDownToLine className="mr-2 h-4 w-4" />}
+                  {t(exporting ? "index.export.busy" : "index.downloadButton")}
                   <ChevronDown className="ml-1.5 h-4 w-4 opacity-80" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-[var(--radix-dropdown-menu-trigger-width)] min-w-[15rem]">
                 {(["full", "compact"] as const).map((variant) => (
-                  <DropdownMenuItem key={variant} onSelect={() => downloadPdf(variant)} className="flex-col items-start gap-0.5 py-2">
+                  <DropdownMenuItem key={variant} disabled={exporting} onSelect={() => downloadPdf(variant)} className="flex-col items-start gap-0.5 py-2">
                     <span className="font-medium">{t(`index.export.${variant}`)}</span>
                     <span className="text-xs text-muted-foreground">{t(`index.export.${variant}Hint`)}</span>
                   </DropdownMenuItem>

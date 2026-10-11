@@ -7,45 +7,25 @@
 // its width and height set to the size it is shown at (fitSvgImages). Then both values agree in every
 // browser. It must be a new element: html2canvas copies an image's currentSrc when that differs from
 // its src, and an element given a new src keeps the old image as currentSrc until the new one loads.
+// The SVG is read from the image's data URL, so SVG images in the CV must be data URLs (see logos.ts).
 
 const SVG_URL = /^data:image\/svg\+xml|\.svg(?:[?#]|$)/i;
 const SVG_DATA_URL = /^data:image\/svg\+xml([^,]*),/i;
 const PLAIN_LENGTH = /^\s*[\d.]+(?:px)?\s*$/;
 
-// Text of SVG files (not data URLs), by absolute URL, fetched ahead of an export
-const files = new Map<string, string>();
-const fetching = new Set<string>();
-
-const urlOf = (img: HTMLImageElement) => img.currentSrc || img.src;
-
 const svgText = (url: string) => {
   const data = SVG_DATA_URL.exec(url);
-  if (!data) return files.get(url);
+  if (!data) return undefined;
   const payload = url.slice(data[0].length);
   if (!/;base64/i.test(data[1])) return decodeURIComponent(payload);
   return new TextDecoder().decode(Uint8Array.from(atob(payload), char => char.charCodeAt(0)));
-};
-
-// Starts fetching the SVG files shown as images in `root`, so an export doesn't have to wait for them.
-// Images given as data URLs (all of them in a production build) need nothing.
-export const prefetchSvgImages = (root: ParentNode) => {
-  root.querySelectorAll('img').forEach(img => {
-    const url = urlOf(img);
-    if (!SVG_URL.test(url) || SVG_DATA_URL.test(url) || files.has(url) || fetching.has(url)) return;
-    fetching.add(url);
-    fetch(url)
-      .then(response => (response.ok ? response.text() : Promise.reject(new Error(`HTTP ${response.status}`))))
-      .then(text => { files.set(url, text); })
-      .catch(error => console.warn('PDF export: could not fetch', url, error))
-      .finally(() => fetching.delete(url));
-  });
 };
 
 // Replaces each SVG <img> in `root`, which must be laid out, with one showing an SVG of the size the
 // image is shown at
 export const fitSvgImages = (root: ParentNode) => {
   root.querySelectorAll('img').forEach(img => {
-    const url = urlOf(img);
+    const url = img.currentSrc || img.src;
     if (!SVG_URL.test(url)) return;
 
     // html2canvas draws an image into its content box

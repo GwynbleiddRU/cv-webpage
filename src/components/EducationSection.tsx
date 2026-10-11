@@ -1,6 +1,12 @@
 import { useTranslation } from "react-i18next";
-import hseLogo from "@/assets/images/hse.svg";
-import innopolisLogo from "@/assets/images/innopolis.svg";
+import { LOGOS } from "@/lib/logos";
+
+// Text in the education.<key>.* translations
+const ENTRIES = [
+  { key: "mastersDegree", logo: LOGOS.innopolis, years: "2024" },
+  { key: "bachelorsDegree", logo: LOGOS.hse, years: "2022" },
+  { key: "professionalDevelopment", logo: LOGOS.innopolis, years: "2023-2024" },
+];
 
 // `brief` (used by the AI CV) keeps only the degree, institution and dates; the compact PDF drops
 // the descriptions (`cv-full-only`) in either case
@@ -23,63 +29,23 @@ const EducationSection = ({ brief = false }: { brief?: boolean }) => {
         {t("education.sectionTitle")}
       </h3>
       <div className={listClass}>
-        <div className={entryClass}>
-          <img src={innopolisLogo} alt="" className={logoClass} />
-          <div>
-            <div className={headerClass}>
-              <h4 className={titleClass}>
-                {t("education.mastersDegree.title")}
-              </h4>
-              <span className={dateClass}>2024</span>
+        {ENTRIES.map(({ key, logo, years }) => (
+          <div key={key} className={entryClass}>
+            <img src={logo} alt="" className={logoClass} />
+            <div>
+              <div className={headerClass}>
+                <h4 className={titleClass}>{t(`education.${key}.title`)}</h4>
+                <span className={dateClass}>{years}</span>
+              </div>
+              <p className="text-gray-700 print:text-xs dense:text-[13px]">{t(`education.${key}.institution`)}</p>
             </div>
-            <p className="text-gray-700 print:text-xs dense:text-[13px]">
-              {t("education.mastersDegree.institution")}
-            </p>
+            {!brief && (
+              <p className="cv-full-only col-start-2 text-sm text-gray-600 mt-1 print:text-xs print:mt-0">
+                {t(`education.${key}.description`)}
+              </p>
+            )}
           </div>
-          {!brief && (
-            <p className="cv-full-only col-start-2 text-sm text-gray-600 mt-1 print:text-xs print:mt-0">
-              {t("education.mastersDegree.description")}
-            </p>
-          )}
-        </div>
-        <div className={entryClass}>
-          <img src={hseLogo} alt="" className={logoClass} />
-          <div>
-            <div className={headerClass}>
-              <h4 className={titleClass}>
-                {t("education.bachelorsDegree.title")}
-              </h4>
-              <span className={dateClass}>2022</span>
-            </div>
-            <p className="text-gray-700 print:text-xs dense:text-[13px]">
-              {t("education.bachelorsDegree.institution")}
-            </p>
-          </div>
-          {!brief && (
-            <p className="cv-full-only col-start-2 text-sm text-gray-600 mt-1 print:text-xs print:mt-0">
-              {t("education.bachelorsDegree.description")}
-            </p>
-          )}
-        </div>
-        <div className={entryClass}>
-          <img src={innopolisLogo} alt="" className={logoClass} />
-          <div>
-            <div className={headerClass}>
-              <h4 className={titleClass}>
-                {t("education.professionalDevelopment.title")}
-              </h4>
-              <span className={dateClass}>2023-2024</span>
-            </div>
-            <p className="text-gray-700 print:text-xs dense:text-[13px]">
-              {t("education.professionalDevelopment.institution")}
-            </p>
-          </div>
-          {!brief && (
-            <p className="cv-full-only col-start-2 text-sm text-gray-600 mt-1 print:text-xs print:mt-0">
-              {t("education.professionalDevelopment.description")}
-            </p>
-          )}
-        </div>
+        ))}
       </div>
     </div>
   );

@@ -1,11 +1,17 @@
 import { useTranslation } from "react-i18next";
-import gazstroypromLogo from "@/assets/images/gazstroyprom.svg";
-import tuneLikeLogo from "@/assets/images/tunelike.svg";
-import uralEnergoLogo from "@/assets/images/ural-energo.svg";
+import { LOGOS } from "@/lib/logos";
+
+// Text in the experience.<key>.* translations. A job without `dates` takes them from the translations
+// (the current one: "present"); a job with `achievements` there lists them.
+const JOBS: { key: string; logo: string; dates?: string }[] = [
+  { key: "uralEnergo", logo: LOGOS.uralEnergo },
+  { key: "tuneLike", logo: LOGOS.tuneLike, dates: "01/09/2022 - 29/08/2024" },
+  { key: "gazstroyprom", logo: LOGOS.gazstroyprom, dates: "07/05/2023 - 08/07/2023" },
+];
 
 // `brief` (used by the AI CV) keeps only the company, dates and role, with lighter company names
 const ExperienceSection = ({ brief = false }: { brief?: boolean }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const listClass = brief ? "cv-pdf-split space-y-3 print:space-y-2 dense:space-y-2" : "cv-pdf-split space-y-4 print:space-y-2 dense:space-y-3";
   // In the PDF an entry may break between its parts; its head (logo, company, dates and role) stays with the description
   const entryClass = "cv-pdf-split";
@@ -31,96 +37,36 @@ const ExperienceSection = ({ brief = false }: { brief?: boolean }) => {
         {t("experience.sectionTitle")}
       </h3>
       <div className={listClass}>
-        <div className={entryClass}>
-          <div className={headClass}>
-            <img src={uralEnergoLogo} alt="" className={logoClass} />
-            <div>
-              <div className={headerClass}>
-                <h4 className={companyClass}>
-                  {t("experience.uralEnergo.company")}
-                </h4>
-                <span className={dateClass}>{t("experience.uralEnergo.dates")}</span>
+        {JOBS.map(({ key, logo, dates }) => (
+          <div key={key} className={entryClass}>
+            <div className={headClass}>
+              <img src={logo} alt="" className={logoClass} />
+              <div>
+                <div className={headerClass}>
+                  <h4 className={companyClass}>{t(`experience.${key}.company`)}</h4>
+                  <span className={dateClass}>{dates ?? t(`experience.${key}.dates`)}</span>
+                </div>
+                <p className={positionClass}>{t(`experience.${key}.position`)}</p>
               </div>
-              <p className={positionClass}>
-                {t("experience.uralEnergo.position")}
-              </p>
             </div>
+            {!brief && (
+              <div className={detailsClass}>
+                <p className="print:text-xs">{t(`experience.${key}.description`)}</p>
+                {i18n.exists(`experience.${key}.achievements`) && (
+                  <div className="cv-pdf-split">
+                    <p className="cv-pdf-keep font-medium print:text-xs">{t(`experience.${key}.keyAchievements`)}</p>
+                    <ul className="cv-pdf-split list-disc list-inside space-y-1 pl-2 print:space-y-0 print:text-xs dense:list-outside dense:space-y-0.5 dense:pl-5">
+                      {(t(`experience.${key}.achievements`, { returnObjects: true }) as string[]).map((achievement) => (
+                        <li key={achievement}>{achievement}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                <p className={technologiesClass}>{t(`experience.${key}.technologiesUsed`)}</p>
+              </div>
+            )}
           </div>
-          {!brief && (
-            <div className={detailsClass}>
-              <p className="print:text-xs">
-                {t("experience.uralEnergo.description")}
-              </p>
-              <p className={technologiesClass}>
-                {t("experience.uralEnergo.technologiesUsed")}
-              </p>
-            </div>
-          )}
-        </div>
-        <div className={entryClass}>
-          <div className={headClass}>
-            <img src={tuneLikeLogo} alt="" className={logoClass} />
-            <div>
-              <div className={headerClass}>
-                <h4 className={companyClass}>
-                  {t("experience.tuneLike.company")}
-                </h4>
-                <span className={dateClass}>01/09/2022 - 29/08/2024</span>
-              </div>
-              <p className={positionClass}>
-                {t("experience.tuneLike.position")}
-              </p>
-            </div>
-          </div>
-          {!brief && (
-            <div className={detailsClass}>
-              <p className="print:text-xs">
-                {t("experience.tuneLike.description")}
-              </p>
-              <div className="cv-pdf-split">
-                <p className="cv-pdf-keep font-medium print:text-xs">
-                  {t("experience.tuneLike.keyAchievements")}
-                </p>
-                <ul className="cv-pdf-split list-disc list-inside space-y-1 pl-2 print:space-y-0 print:text-xs dense:list-outside dense:space-y-0.5 dense:pl-5">
-                  {(t("experience.tuneLike.achievements", { returnObjects: true }) as string[]).map((achievement, index) => (
-                    <li key={index}>
-                      {achievement}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <p className={technologiesClass}>
-                {t("experience.tuneLike.technologiesUsed")}
-              </p>
-            </div>
-          )}
-        </div>
-        <div className={entryClass}>
-          <div className={headClass}>
-            <img src={gazstroypromLogo} alt="" className={logoClass} />
-            <div>
-              <div className={headerClass}>
-                <h4 className={companyClass}>
-                  {t("experience.gazstroyprom.company")}
-                </h4>
-                <span className={dateClass}>07/05/2023 - 08/07/2023</span>
-              </div>
-              <p className={positionClass}>
-                {t("experience.gazstroyprom.position")}
-              </p>
-            </div>
-          </div>
-          {!brief && (
-            <div className={detailsClass}>
-              <p className="print:text-xs">
-                {t("experience.gazstroyprom.description")}
-              </p>
-              <p className={technologiesClass}>
-                {t("experience.gazstroyprom.technologiesUsed")}
-              </p>
-            </div>
-          )}
-        </div>
+        ))}
       </div>
     </div>
   );
