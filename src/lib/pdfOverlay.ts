@@ -45,6 +45,10 @@ export const readOverlay = (root: HTMLElement, pageHeight: number): Overlay => {
   const runs: (TextRun & { block: Element; top: number; item?: Element })[] = [];
   const range = document.createRange();
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  // Whether the text has white space between the last word read and the next one. Words also get a
+  // space when they are visibly apart (such as a number and its margin), but that gap alone misses
+  // many real spaces in Safari, whose system font has narrow ones.
+  let spaced = false;
   for (let node = walker.nextNode(); node; node = walker.nextNode()) {
     const style = getComputedStyle(node.parentElement);
     if (style.visibility !== 'visible') continue;
@@ -53,9 +57,14 @@ export const readOverlay = (root: HTMLElement, pageHeight: number): Overlay => {
     const block = list ?? blockOf(node.parentElement);
     const item = list && Array.from(list.children).find(child => child.contains(node));
 
-    for (const word of node.textContent.matchAll(/\S+/g)) {
-      range.setStart(node, word.index);
-      range.setEnd(node, word.index + word[0].length);
+    for (const token of node.textContent.matchAll(/\s+|\S+/g)) {
+      const word = token[0];
+      if (/^\s/.test(word)) {
+        spaced = true;
+        continue;
+      }
+      range.setStart(node, token.index);
+      range.setEnd(node, token.index + word.length);
       const rect = range.getClientRects()[0];
       if (!rect?.width) continue;
       const { page, x, top, bottom } = place(rect);
@@ -65,14 +74,16 @@ export const readOverlay = (root: HTMLElement, pageHeight: number): Overlay => {
         Math.abs(run.top - top) < fontSize / 2 && x >= run.x + run.width - 1;
       const nextItem = sameBlock && list && run.item !== item;
       if (sameLine) {
-        run.text += (nextItem ? ', ' : x - (run.x + run.width) > fontSize * 0.15 ? ' ' : '') + word[0];
+        const apart = spaced || x - (run.x + run.width) > fontSize * 0.15;
+        run.text += (nextItem ? ', ' : apart ? ' ' : '') + word;
         run.width = x + rect.width - run.x;
       } else {
         if (nextItem) run.text += ',';  // The list goes on in the next line
         // UI fonts put the baseline about 0.24em above the bottom of the text box
-        runs.push({ page, x, baseline: bottom - fontSize * 0.24, width: rect.width, fontSize, text: word[0], block, top, item });
+        runs.push({ page, x, baseline: bottom - fontSize * 0.24, width: rect.width, fontSize, text: word, block, top, item });
       }
       if (item) runs.at(-1).item = item;
+      spaced = false;
     }
   }
 

@@ -1,6 +1,6 @@
 import html2pdf from 'html2pdf.js';
 import { loadOverlayFont, readOverlay, writeOverlay, type Overlay, type PageMapping } from '@/lib/pdfOverlay';
-import { startSvgDrawFix } from '@/lib/svgDrawFix';
+import { fitSvgImages } from '@/lib/svgImages';
 
 // `full` is the CV as on the site. `compact` drops `.cv-full-only` elements, shows the
 // `.cv-compact-only` ones (hidden on the site) and turns on the `dense:` styles.
@@ -183,7 +183,6 @@ export const exportPdf = (source: HTMLElement, variant: PdfVariant, fileName: st
   let overlay: Overlay;
   let mapping: PageMapping;
 
-  const endSvgFix = startSvgDrawFix();
   html2pdf()
     .from(clonedElement)
     .set(opt)
@@ -194,6 +193,7 @@ export const exportPdf = (source: HTMLElement, variant: PdfVariant, fileName: st
       const canvasWidth = Math.floor(Math.ceil(this.prop.container.getBoundingClientRect().width) * scale);
       const pageHeight = Math.floor(canvasWidth * this.prop.pageSize.inner.ratio) / scale;
       paginate(this.prop.container, pageHeight, pageHeader);
+      fitSvgImages(this.prop.container);  // So that Safari doesn't crop them
 
       overlay = readOverlay(this.prop.container, pageHeight);
       mapping = {
@@ -206,9 +206,5 @@ export const exportPdf = (source: HTMLElement, variant: PdfVariant, fileName: st
     .then(async function () {
       writeOverlay(this.prop.pdf, overlay, mapping, await font);
     })
-    .save()
-    .then(endSvgFix, (error: unknown) => {
-      endSvgFix();
-      throw error;
-    });
+    .save();
 };

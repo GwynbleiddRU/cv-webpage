@@ -77,5 +77,5 @@ Don't undo these without asking:
   - **Wording:** the condensed texts were written by an agent from the full ones, and the owner was asked to review them.
 - In the PDF, an experience entry may break across pages between its parts, but its head stays with its description, "Key Achievements" stays with its first bullet, and a "Technologies used" line is never cut off at the top of a page.
 - In the AI CV, the "What I do" details are blue panels with a left border and dot bullets.
-- The logos stay `<img>` SVGs on the page. The PDF export draws raster copies of them, because Safari otherwise crops them (see [pdf-export.md](pdf-export.md)).
+- The logos stay `<img>` SVGs, on the page and in the PDF. The PDF export resizes each SVG to the size it is shown at, because Safari otherwise crops it (see [pdf-export.md](pdf-export.md)).
 - In both CVs, each Education and Experience entry starts with the organisation's logo: a 40 px SVG in its own column, centred on the name and degree or role. The SVGs were vectorised from the owner's PNGs and normalised to one size (see [architecture.md](architecture.md)).

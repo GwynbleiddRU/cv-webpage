@@ -45,11 +45,11 @@ Everything runs in `exportPdf` in `src/lib/print.ts`:
 7. `writeOverlay()` writes the recorded text as invisible text and adds the links.
 8. `save()` downloads `<fileName>.pdf`.
 
-From step 2 until the download, `startSvgDrawFix()` in `src/lib/svgDrawFix.ts` changes how SVG images are drawn on canvas, to work around a Safari bug (see "html2canvas traps"). It uses raster copies that `prepareSvgImages()` makes when the CV is shown; `Index.tsx` calls it.
+Right after `paginate()` in step 4, `fitSvgImages()` from `src/lib/svgImages.ts` replaces each SVG `<img>` in the container with one whose SVG has exactly the size it is shown at, so that Safari doesn't crop it (see "html2canvas traps"). SVG files that aren't data URLs (on the dev server) are read from text that `prefetchSvgImages()` fetches when the CV is shown; `Index.tsx` calls it.
 
 html2pdf's own page breaking and link handling are switched off (`pagebreak: { mode: [] }`, `enableLinks: false`). Its link handling records positions before `paginate()` moves content, which puts links in the wrong place. Don't switch either back on.
 
-Don't change the CV markup html2canvas copies just to suit the export, such as turning the logo `<img>` elements into inline SVG. That layout is what has been checked on an iPhone. In Playwright's Windows WebKit, inline logos, a delay before export or images that are already loaded made html2canvas lay out its copy about 10% smaller, with words run together (see the environment notes in [README.md](README.md)).
+Keep the export synchronous up to html2canvas, and don't restructure the markup it copies just for the export. In Playwright's Windows WebKit, a wait before rendering (such as a timer) and inline-SVG logos made html2canvas lay out its copy about 10% smaller, with words run together. Production builds of the current code render normally there; check any such change in a production build (see the environment notes in [README.md](README.md)).
 
 ## Page breaks (`paginate`)
 
@@ -66,6 +66,7 @@ Don't change the CV markup html2canvas copies just to suit the export, such as t
 ## Text layer (`pdfOverlay.ts`)
 
 - Words are read from the final layout through DOM `Range` boxes and joined into runs: one per line, block and font size. Runs are written in DOM order, which is the order text extraction and most ATS read them in.
+- Two words in a run are separated by a space when the source text has white space between them, or when they are visibly apart (more than 0.15em, such as a number and its margin). The gap alone isn't enough: Apple's system font has narrow spaces, and PDFs exported on an iPhone lost many of them ("I helpturnwhat").
 - Each run is drawn as invisible text (rendering mode 3) and stretched horizontally (`Tz`) to the width of the visible text, so selecting text lines up with what you see. A run's page is chosen by the middle of its text box, because a text box can stick out above its line.
 - Items of an element with the `data-pdf-list` attribute, such as the tags in `TechStackSection`, are joined into one comma-separated list, a run per visual line. Without it, separate tags would read as one long phrase ("C# .NET ASP.NET Core"). Use it on any new tag or chip list.
 - The font is `src/assets/fonts/NotoSans-Regular-subset.ttf` (SIL Open Font License; the licence file sits next to it). It is fetched only when someone exports. jsPDF embeds only the glyphs used, so a PDF grows by about 50 KB.
@@ -80,12 +81,13 @@ Don't change the CV markup html2canvas copies just to suit the export, such as t
 ## html2canvas traps
 
 - html2canvas draws an `<img>` only when it has an intrinsic size (`naturalWidth` and `naturalHeight` above 0), and uses that size as the source rectangle. An SVG without `width` and `height` attributes may have no intrinsic size, so keep them on every SVG used in the CV. html2canvas also ignores `object-fit`, so give an image a box with its own aspect ratio.
-- **Safari bug.** In PDFs exported on an iPhone, the logos (`<img src="….svg">` that the page also shows, 128 px natural size, drawn at 40 px) showed only their top-left third, enlarged. The inline `<svg>` icons came out right; html2canvas draws each of those from a fresh copy at its own size, never shown on the page.
-  - **Fix (`svgDrawFix.ts`):** `prepareSvgImages()` makes a raster copy (4 pixels per CSS pixel) of each SVG `<img>` in the CV, from a fresh copy of the SVG drawn at its own size. During an export, `startSvgDrawFix()` makes html2canvas draw that copy instead of the SVG image. Other whole-image SVG draws go through `drawImage(image, dx, dy, dw, dh)`.
-  - **Already ruled out:** the first fix, only that five-argument form, didn't help on the iPhone.
-  - **What's still open:** which exact trait triggers the bug (shown on the page, or drawn at another size); the copies avoid both.
-  - **If an export starts before the copies are ready** (a moment after page load), the logos are drawn from the SVG as before.
-  - **For new SVG images in the CV,** an `<img>` gets a copy automatically.
+- **Safari's natural size of SVG images.** Safari gives a rendered SVG `<img>` the size it is shown at as its `naturalWidth`/`naturalHeight`, not the size in the file. html2canvas takes the part of the image to draw from those values (`drawImage(image, 0, 0, naturalWidth, naturalHeight, …)`). So PDFs exported on an iPhone showed only the top-left 32 px (compact) or 40 px (full) of each 128 px logo, enlarged; the crops in the owner's iPhone PDFs match this to the pixel. Inline `<svg>` icons are fine, because html2canvas redraws them at their shown size.
+  - **Fix (`svgImages.ts`):** `fitSvgImages()` replaces each SVG `<img>` in the export's container with a new one showing the same SVG with `width`/`height` set to its shown size (content box), so both values agree in every browser.
+  - **Why a new element:** html2canvas copies an image's `currentSrc` when it differs from `src`, and an element given a new `src` keeps the old image as `currentSrc` until the new one loads.
+  - **SVGs without a `viewBox`** can't be resized that way (a new size would crop them). `fitSvgImages()` adds one from plain-number `width`/`height`, or leaves the image as it is with a console warning.
+  - **Ruled out:** two earlier fixes wrapped `CanvasRenderingContext2D.prototype.drawImage`, one drawing whole SVG images with the five-argument form, one drawing raster copies made ahead of time. Both only acted when `sw` matched the image's `naturalWidth`, which in Safari it never does, so neither ever ran on the iPhone.
+  - **New SVG `<img>` elements** in the CV are handled automatically. Keep `width`, `height` and `viewBox` on every SVG.
+- html2canvas waits for the images in its copy to load only in browsers whose user agent says `AppleWebKit` (Chrome, Edge, Safari). The resized logos are data URLs that still decode in time in Firefox (checked with Playwright's Firefox).
 - `src/index.css` contains `body > div > img { display: inline; }`. html2canvas finds text baselines with an `<img>` it adds to `<body>`, and Tailwind's base styles make images block-level. Without the rule, every line of PDF text is drawn about 6 px too low, and bullets and icons look misaligned. Keep it.
 - The export uses screen styles, so `print:*` utilities do nothing in it. Style the compact version with `dense:`.
 - Responsive prefixes (`sm:`, `md:`) follow the window of the browser doing the export, not the 190 mm container. Exported from a phone-width window, `sm:grid-cols-2` becomes one column in the PDF. For anything that must look the same in the PDF, use width-independent styles (like the inline `repeat(auto-fit, minmax(250px, 1fr))` grids), or force the layout on the clone in `exportPdf` as is done for `.cv-header`. Known open case: the AI CV's "Where I apply this" grid (`grid-cols-1 sm:grid-cols-2`) turns into one column when exported from a narrow window. It is in the full version only.
@@ -156,16 +158,12 @@ Do this after any change to CV markup, styles, translations or the export code. 
    ```
 
 5. After changes to Tailwind classes, also export once from a production build: `npx vite build --outDir <temp dir>`, then `node node_modules/vite/bin/vite.js preview --outDir <temp dir> --port 8093 --strictPort`. Its PDFs should be byte-identical to the dev server's.
-6. After changes to images, icons or the export code, check the Safari workaround. Apple's WebKit isn't available on Windows, and Playwright's WebKit for Windows (`PLAYWRIGHT_BROWSERS_PATH=<temp dir> node node_modules/playwright-core/cli.js install webkit`) doesn't have the bug. Instead, simulate it in Edge:
-   - In `context.addInitScript`, wrap `CanvasRenderingContext2D.prototype.drawImage`.
-   - For a draw of an image whose source is `data:image/svg+xml…` or `….svg`, check two conditions:
-     - **shown:** an `<img>` in `document.images` has the same source;
-     - **size:** the destination size differs from the natural size.
-   - When the condition you're testing holds, draw only the top-left third (`0, 0, naturalWidth / 3, naturalHeight / 3` to the same destination) and count the call.
-   - Export once per condition.
-     - **Without the fix**, both conditions reproduce the iPhone result: the logos show only their top-left corner.
+6. After changes to images, icons, text handling or the export code, check the Safari workarounds. Apple's WebKit isn't available on Windows, and Playwright's WebKit for Windows (`PLAYWRIGHT_BROWSERS_PATH=<temp dir> node node_modules/playwright-core/cli.js install webkit`) doesn't have these problems. Instead, simulate them in Edge:
+   - **Images:** in `context.addInitScript`, redefine the `naturalWidth` and `naturalHeight` getters on `HTMLImageElement.prototype`. For a connected image whose source is `data:image/svg+xml…` or `….svg`, return its rounded shown size (`getBoundingClientRect()`), and count the reads where that differs from the real value by more than 1. Then export.
+     - **Without the fix**, this reproduces the owner's iPhone PDFs to the pixel: each logo shows only its top-left part.
      - **With the fix**, the count must be 0 and the PDF byte-identical to a normal export.
-   - Run it on a production build as well, where the logos are `data:` URLs.
+     - Run it on a production build as well, where the logos are `data:` URLs.
+   - **Spaces:** narrow the spaces with `page.addStyleTag({ content: '* { word-spacing: -0.14em !important; }' })` before exporting. The extracted text must keep its spaces.
 
 ## Limits of this design
 
