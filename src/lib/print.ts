@@ -1,6 +1,6 @@
 import html2pdf from 'html2pdf.js';
 import { loadOverlayFont, readOverlay, writeOverlay, type Overlay, type PageMapping } from '@/lib/pdfOverlay';
-import { drawWholeSvgImages } from '@/lib/svgDrawFix';
+import { startSvgDrawFix } from '@/lib/svgDrawFix';
 
 // `full` is the CV as on the site. `compact` drops `.cv-full-only` elements, shows the
 // `.cv-compact-only` ones (hidden on the site) and turns on the `dense:` styles.
@@ -183,7 +183,7 @@ export const exportPdf = (source: HTMLElement, variant: PdfVariant, fileName: st
   let overlay: Overlay;
   let mapping: PageMapping;
 
-  const endSvgFix = drawWholeSvgImages();
+  const endSvgFix = startSvgDrawFix();
   html2pdf()
     .from(clonedElement)
     .set(opt)

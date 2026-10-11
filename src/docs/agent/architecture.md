@@ -17,7 +17,7 @@ React 18 and TypeScript 5 on Vite 5 (`@vitejs/plugin-react-swc`), Tailwind CSS 3
 | `src/components/TechStackSection.tsx` | Compact PDF only (hidden on the site): the developer CV's technologies as tags, grouped by area (`stack.groups`). |
 | `src/lib/print.ts` | PDF export: `exportPdf` (full or compact version) and `paginate` (page breaks and running headers). |
 | `src/lib/pdfOverlay.ts` | The invisible text layer and the links of the PDF. |
-| `src/lib/svgDrawFix.ts` | During an export, draws whole SVG images with the five-argument `drawImage`, so icons aren't cropped in Safari on Retina screens. |
+| `src/lib/svgDrawFix.ts` | Safari workaround: raster copies of the CV's SVG `<img>` elements, made when the CV is shown (`prepareSvgImages`, called from `Index.tsx`) and drawn in their place during an export (`startSvgDrawFix`), so the logos aren't cropped in PDFs exported on an iPhone or Mac. |
 | `src/assets/fonts/` | Noto Sans subset used by the PDF text layer, with its OFL licence. |
 | `src/assets/images/` | Organisation logos shown in Education and Experience (`*.svg`). The PNGs next to them are the owner's originals the SVGs were traced from; the app doesn't use them. |
 | `src/i18n.ts` | i18next set-up. |

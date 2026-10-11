@@ -49,7 +49,7 @@ There are no automated tests. A change is verified by the type check, lint, and 
 
 - Windows 11, with both PowerShell and Git Bash. The repo path contains Cyrillic (`…\Репозиторий\…`): quote paths, and expect some console tools to print it garbled.
 - Microsoft Edge is installed and Chrome is not, so headless browser checks run on Edge ([pdf-export.md](pdf-export.md) has the script).
-- Windows display scaling is about 110%. Playwright's WebKit inherits it (`devicePixelRatio` 1.104, `innerWidth` 1159 in a 1280 px window), so its results can differ from real Safari. Apple's own WebKit can't be tested here at all.
+- Windows display scaling is about 110%. Playwright's WebKit inherits it (`devicePixelRatio` 1.104, `innerWidth` 1159 in a 1280 px window), so its results can differ from real Safari. On the dev server it may lay out the PDF about 10% smaller, with words run together; judge its layout only from a production build (`npx vite build --outDir <temp dir>` and `vite preview`). Apple's own WebKit can't be tested here at all.
 - Python 3 is installed without extra packages. Create a virtual environment in a temp directory for tools such as `pdfminer.six` or `fonttools`.
 - Git warns about LF being replaced by CRLF in edited files; that is expected.
 
@@ -77,4 +77,5 @@ Don't undo these without asking:
   - **Wording:** the condensed texts were written by an agent from the full ones, and the owner was asked to review them.
 - In the PDF, an experience entry may break across pages between its parts, but its head stays with its description, "Key Achievements" stays with its first bullet, and a "Technologies used" line is never cut off at the top of a page.
 - In the AI CV, the "What I do" details are blue panels with a left border and dot bullets.
+- The logos stay `<img>` SVGs on the page. The PDF export draws raster copies of them, because Safari otherwise crops them (see [pdf-export.md](pdf-export.md)).
 - In both CVs, each Education and Experience entry starts with the organisation's logo: a 40 px SVG in its own column, centred on the name and degree or role. The SVGs were vectorised from the owner's PNGs and normalised to one size (see [architecture.md](architecture.md)).

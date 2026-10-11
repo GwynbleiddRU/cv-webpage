@@ -15,6 +15,7 @@ import { useEffect, useRef, type MouseEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { exportPdf, type PdfVariant } from "@/lib/print";
+import { prepareSvgImages } from "@/lib/svgDrawFix";
 import { cn } from "@/lib/utils";
 
 const Index = () => {
@@ -44,6 +45,11 @@ const Index = () => {
     document.title = t(isAi ? "ai.documentTitle" : "index.documentTitle");
     window.scrollTo(0, 0);
   }, [isAi, i18n.language, t]);
+
+  // Raster copies of the CV's SVG images, which PDFs exported in Safari need (see svgDrawFix.ts)
+  useEffect(() => {
+    if (cvRef.current) prepareSvgImages(cvRef.current);
+  }, [isAi]);
 
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     cn(

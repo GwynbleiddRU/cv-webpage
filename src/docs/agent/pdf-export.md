@@ -45,11 +45,11 @@ Everything runs in `exportPdf` in `src/lib/print.ts`:
 7. `writeOverlay()` writes the recorded text as invisible text and adds the links.
 8. `save()` downloads `<fileName>.pdf`.
 
-From step 2 until the download, `drawWholeSvgImages()` in `src/lib/svgDrawFix.ts` changes how SVGs are drawn on canvas to work around a Safari bug (see "html2canvas traps").
+From step 2 until the download, `startSvgDrawFix()` in `src/lib/svgDrawFix.ts` changes how SVG images are drawn on canvas, to work around a Safari bug (see "html2canvas traps"). It uses raster copies that `prepareSvgImages()` makes when the CV is shown; `Index.tsx` calls it.
 
 html2pdf's own page breaking and link handling are switched off (`pagebreak: { mode: [] }`, `enableLinks: false`). Its link handling records positions before `paginate()` moves content, which puts links in the wrong place. Don't switch either back on.
 
-`exportPdf` is synchronous up to html2canvas: the export starts while the menu click is still being handled. Keep it that way (no `await` before rendering). Playwright's Windows WebKit, which inherits this PC's 110% display scaling, renders the whole PDF about 10% smaller with words run together once rendering starts after the click. Whether real Safari does the same is unknown, so don't take the risk.
+Don't change the CV markup html2canvas copies just to suit the export, such as turning the logo `<img>` elements into inline SVG. That layout is what has been checked on an iPhone. In Playwright's Windows WebKit, inline logos, a delay before export or images that are already loaded made html2canvas lay out its copy about 10% smaller, with words run together (see the environment notes in [README.md](README.md)).
 
 ## Page breaks (`paginate`)
 
@@ -80,7 +80,12 @@ html2pdf's own page breaking and link handling are switched off (`pagebreak: { m
 ## html2canvas traps
 
 - html2canvas draws an `<img>` only when it has an intrinsic size (`naturalWidth` and `naturalHeight` above 0), and uses that size as the source rectangle. An SVG without `width` and `height` attributes may have no intrinsic size, so keep them on every SVG used in the CV. html2canvas also ignores `object-fit`, so give an image a box with its own aspect ratio.
-- **Safari bug:** html2canvas draws every image, including inline `<svg>` icons it has serialised to `data:image/svg+xml`, with `drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh)`. For SVG images, Safari on macOS and iOS reads that source rectangle in device pixels, so on a Retina screen only the top-left part of each icon got into the PDF (a third of it on an iPhone). `svgDrawFix.ts` passes any draw of a whole SVG image on as `drawImage(image, dx, dy, dw, dh)`, which is the same draw by the canvas spec. In Edge the PDFs are byte-identical with and without the wrapper. Keep icons as SVG; the wrapper covers both `<img src="….svg">` and inline `<svg>`.
+- **Safari bug.** In PDFs exported on an iPhone, the logos (`<img src="….svg">` that the page also shows, 128 px natural size, drawn at 40 px) showed only their top-left third, enlarged. The inline `<svg>` icons came out right; html2canvas draws each of those from a fresh copy at its own size, never shown on the page.
+  - **Fix (`svgDrawFix.ts`):** `prepareSvgImages()` makes a raster copy (4 pixels per CSS pixel) of each SVG `<img>` in the CV, from a fresh copy of the SVG drawn at its own size. During an export, `startSvgDrawFix()` makes html2canvas draw that copy instead of the SVG image. Other whole-image SVG draws go through `drawImage(image, dx, dy, dw, dh)`.
+  - **Already ruled out:** the first fix, only that five-argument form, didn't help on the iPhone.
+  - **What's still open:** which exact trait triggers the bug (shown on the page, or drawn at another size); the copies avoid both.
+  - **If an export starts before the copies are ready** (a moment after page load), the logos are drawn from the SVG as before.
+  - **For new SVG images in the CV,** an `<img>` gets a copy automatically.
 - `src/index.css` contains `body > div > img { display: inline; }`. html2canvas finds text baselines with an `<img>` it adds to `<body>`, and Tailwind's base styles make images block-level. Without the rule, every line of PDF text is drawn about 6 px too low, and bullets and icons look misaligned. Keep it.
 - The export uses screen styles, so `print:*` utilities do nothing in it. Style the compact version with `dense:`.
 - Responsive prefixes (`sm:`, `md:`) follow the window of the browser doing the export, not the 190 mm container. Exported from a phone-width window, `sm:grid-cols-2` becomes one column in the PDF. For anything that must look the same in the PDF, use width-independent styles (like the inline `repeat(auto-fit, minmax(250px, 1fr))` grids), or force the layout on the clone in `exportPdf` as is done for `.cv-header`. Known open case: the AI CV's "Where I apply this" grid (`grid-cols-1 sm:grid-cols-2`) turns into one column when exported from a narrow window. It is in the full version only.
@@ -151,10 +156,16 @@ Do this after any change to CV markup, styles, translations or the export code. 
    ```
 
 5. After changes to Tailwind classes, also export once from a production build: `npx vite build --outDir <temp dir>`, then `node node_modules/vite/bin/vite.js preview --outDir <temp dir> --port 8093 --strictPort`. Its PDFs should be byte-identical to the dev server's.
-6. After changes to images, icons or the export code, check the Safari workaround. Apple's WebKit isn't available on Windows, and Playwright's WebKit for Windows (`PLAYWRIGHT_BROWSERS_PATH=<temp dir> node node_modules/playwright-core/cli.js install webkit`) doesn't have the bug. Instead, simulate it in Edge: in `context.addInitScript`, wrap `CanvasRenderingContext2D.prototype.drawImage` so that a nine-argument call on an image whose source is `data:image/svg+xml…` or `….svg` divides `sw` and `sh` by 3 and counts the call. Then export:
-   - The count must stay 0.
-   - The PDF must be byte-identical to a normal export.
-   - With the wrapper removed from `print.ts`, the same simulation reproduces the bug: the logos show only their top-left corner.
+6. After changes to images, icons or the export code, check the Safari workaround. Apple's WebKit isn't available on Windows, and Playwright's WebKit for Windows (`PLAYWRIGHT_BROWSERS_PATH=<temp dir> node node_modules/playwright-core/cli.js install webkit`) doesn't have the bug. Instead, simulate it in Edge:
+   - In `context.addInitScript`, wrap `CanvasRenderingContext2D.prototype.drawImage`.
+   - For a draw of an image whose source is `data:image/svg+xml…` or `….svg`, check two conditions:
+     - **shown:** an `<img>` in `document.images` has the same source;
+     - **size:** the destination size differs from the natural size.
+   - When the condition you're testing holds, draw only the top-left third (`0, 0, naturalWidth / 3, naturalHeight / 3` to the same destination) and count the call.
+   - Export once per condition.
+     - **Without the fix**, both conditions reproduce the iPhone result: the logos show only their top-left corner.
+     - **With the fix**, the count must be 0 and the PDF byte-identical to a normal export.
+   - Run it on a production build as well, where the logos are `data:` URLs.
 
 ## Limits of this design
 
